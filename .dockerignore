@@ -1,7 +1,9 @@
-bin
-include
-lib
-lib64
-share
-pyvenv.cfg
-.idea
+/bin
+/include
+/lib
+/lib64
+/share
+/pyvenv.cfg
+/.idea/
+.pytest_cache
+src/Test/.pytest_cache
