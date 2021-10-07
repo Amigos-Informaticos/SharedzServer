@@ -27,7 +27,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Ejecucion de pruebas
-        run: pytest src/Test --html=./reports/$(date '+%d-%m-%y').html --self-contained-html
+        run: pytest tests --html=./reports/$(date '+%d-%m-%y').html --self-contained-html
 
       - name: Subir reporte
         uses: actions/upload-artifact@v2
