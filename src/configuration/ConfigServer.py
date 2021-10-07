@@ -14,17 +14,35 @@ class ConfigServer:
 		server_url = Configuration.get_from_json("config_server_url", config_path)
 		self.path = server_url + "/" + client_name
 
-	def get(self, key: str, parameters: list = []) -> Response:
+	def get(self, key: str, parameters=None) -> Response:
+		if parameters is None:
+			parameters = []
 		return requests.get(self.path + "/" + key, params=parameters)
 
-	def post(self, payload: dict or list = [], parameters: list = []) -> Response:
+	def post(self, payload=None, parameters=None) -> Response:
+		if parameters is None:
+			parameters = []
+		if payload is None:
+			payload = []
 		return requests.post(self.path, json=payload, params=parameters)
 
-	def put(self, payload: dict or list = [], parameters: list = []) -> Response:
+	def put(self, payload=None, parameters=None) -> Response:
+		if parameters is None:
+			parameters = []
+		if payload is None:
+			payload = []
 		return requests.put(self.path, json=payload, params=parameters)
 
-	def patch(self, payload: dict or list = [], parameters: list = []) -> Response:
+	def patch(self, payload=None, parameters=None) -> Response:
+		if payload is None:
+			payload = []
+		if parameters is None:
+			parameters = []
 		return requests.patch(self.path, json=payload, params=parameters)
 
-	def delete(self, payload: dict or list = [], parameters: list = []) -> Response:
+	def delete(self, payload=None, parameters=None) -> Response:
+		if parameters is None:
+			parameters = []
+		if payload is None:
+			payload = []
 		return requests.delete(self.path, json=payload, params=parameters)
