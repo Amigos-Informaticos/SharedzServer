@@ -23,14 +23,12 @@ components:
           minimum: 0
           maximum: 999
           example: 12
-          required: true
         localidad:
           description: Nombre de la localidad
           type: string
           minLength: 3
           maxLength: 150
           example: Tlanelhuayocan
-          required: true
     estado:
       type: object
       description: Un estado de la republica
@@ -42,14 +40,12 @@ components:
           minimum: 0
           maximum: 32
           example: 28
-          required: true
         estado:
           description: Nombre del estado
           type: string
           minLength: 3
           maxLength: 50
           example: Veracruz
-          required: true
     persona:
       type: object
       description: Una persona
@@ -61,53 +57,45 @@ components:
           minimum: 1
           maximum: 999
           example: 34
-          required: true
         nombre:
           description: El nombre de la persona
           type: string
           minLength: 3
           maxLength: 40
           example: Miguel Joaquin
-          required: true
         apellido_paterno:
           description: El apellido paterno de la persona
           type: string
           minLength: 3
           maxLength: 35
           example: Perez
-          required: false
         apellido_materno:
           description: El apellido materno de la persona
           type: string
           minLength: 3
           maxLength: 35
           example: Arriaga
-          required: false
         telefono:
           description: Numero telefonico de la persona
           type: string
           minLength: 8
           maxLength: 14
           example: 22 91 55 55 55
-          required: false
         correo_electronico:
           description: Direccion de correo de la persona
           type: string
           minLength: 5
           maxLength: 320
           example: correo@correo.com
-          required: false
         fecha_nacimiento:
           description: Fecha de nacimiento de la persona
           type: string
           format: date
           example: 1999-07-19
-          required: false
         sexo:
           description: Sexo de la persona
           type: boolean
           example: 0
-          required: true
         localidad:
           $ref: '#/components/schemas/localidad'
         estado:
@@ -123,14 +111,12 @@ components:
           minimum: 0
           maximum: 999
           example: 435
-          required: true
         tipo:
           description: Tipo de vivienda
           type: string
           minLength: 3
           maxLength: 100
           example: Un ranchito
-          required: true
     adoptante:
       allOf:
         - $ref: '#/components/schemas/persona'
@@ -141,7 +127,7 @@ components:
           $ref: '#/components/schemas/vivienda'
 
 paths:
-  /adoptantes:
+  /adoptantes/{id_adoptante}:
     description: Catalogo de adoptantes registrados
     get:
       summary: Retorna la informacion del comensal seleccionado
