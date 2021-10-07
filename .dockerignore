@@ -6,4 +6,4 @@
 /pyvenv.cfg
 /.idea/
 .pytest_cache
-src/Test/.pytest_cache
+/tests

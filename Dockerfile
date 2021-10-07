@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-RUN pip install gunicorn
+RUN pip install gunicorn==20.1.0
 
 RUN apt update && apt install nano
 
