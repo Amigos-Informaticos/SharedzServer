@@ -18,13 +18,14 @@ def test_actualizar():
 
 
 def test_login():
+	adoptante.email = "correo@correo.com"
+	adoptante.set_password("contraChida")
 	assert adoptante.login() == OK
 
 
 def test_cargar():
 	adoptante.email = "correo@correo.com"
 	cargado = adoptante.cargar_adoptante()
-	print(adoptante.__dict__)
 	assert cargado == True
 
 

@@ -9,7 +9,7 @@ class Adoptante(Persona):
 		self.vivienda = None
 
 	def login(self) -> int:
-		logeado: bool = BAD_REQUEST
+		logeado: int = BAD_REQUEST
 		if self.email is not None and self.password is not None:
 			query = "SELECT COUNT(*) AS TOTAL FROM Adoptante " \
 			        "INNER JOIN Persona ON Adoptante.id_adoptante = Persona.id_persona " \
