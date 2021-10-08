@@ -6,3 +6,6 @@ share
 pyvenv.cfg
 .idea
 .pytest_cache
+.coverage
+htmlcov
+package-lock.json

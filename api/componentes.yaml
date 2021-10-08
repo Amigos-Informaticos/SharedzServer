@@ -1,15 +1,3 @@
-openapi: 3.0.0
-info:
-  title: PetMeAPI
-  description: Especificación de la API que expone los servicios provistos por el servidor de PetMe
-  version: 0.0.1
-  contact:
-    name: Edson Manuel Carballo Vera
-    email: edsonmanuelcarballovera@gmail.com
-    url: https://twitter.com/EdsonManuelVera
-servers:
-  - description: Producción
-    url: 'http://amigosinformaticos.ddns.net:42070'
 components:
   schemas:
     localidad:
@@ -125,35 +113,3 @@ components:
       properties:
         vivienda:
           $ref: '#/components/schemas/vivienda'
-
-paths:
-  /adoptantes/{id_adoptante}:
-    description: Catalogo de adoptantes registrados
-    get:
-      summary: Retorna la informacion del comensal seleccionado
-      tags:
-        - Adoptante
-      parameters:
-        - name: id_adoptante
-          description: Id del adoptante cuya informacion se desea recuperar
-          in: path
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 999
-          required: true
-      responses:
-        "200":
-          description: Se ha retornado la informacion correspondiente al adoptante
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/adoptante'
-        "400":
-          description: Peticion erronea o malformada
-        "401":
-          description: Usuario no autenticado
-        "404":
-          description: El adoptante buscado no se encuentra registrado
-        "419":
-          description: La sesion del usuario ha expirado

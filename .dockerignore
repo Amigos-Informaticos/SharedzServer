@@ -7,3 +7,6 @@
 /.idea/
 .pytest_cache
 /tests
+.coverage
+htmlcov
+package-lock.json
