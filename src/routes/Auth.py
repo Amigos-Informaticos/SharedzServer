@@ -68,10 +68,7 @@ class Auth:
 
 	@staticmethod
 	def decode_token(token: str) -> dict:
-		try:
-			decoded_token = decode(token, Auth.secret_password)
-		except:
-			pass
+		decoded_token = decode(token, Auth.secret_password)
 		decoded_token = decoded_token.split("/")
 		return {
 			"email": decoded_token[0],
