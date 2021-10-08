@@ -1,4 +1,5 @@
 from src.model.Persona import Persona
+from src.routes.HTTPStatus import BAD_REQUEST, NOT_FOUND, OK
 
 
 class Adoptante(Persona):
@@ -7,14 +8,17 @@ class Adoptante(Persona):
 		self.id_adoptante = None
 		self.vivienda = None
 
-	def login(self) -> bool:
-		logeado: bool = False
+	def login(self) -> int:
+		logeado: bool = BAD_REQUEST
 		if self.email is not None and self.password is not None:
 			query = "SELECT COUNT(*) AS TOTAL FROM Adoptante " \
 			        "INNER JOIN Persona ON Adoptante.id_adoptante = Persona.id_persona " \
-			        "WHERE correo_electronico = %s AND contrasena = %s"
+			        "WHERE email = %s AND password = %s"
 			valores = [self.email, self.password]
-			logeado = self.conexion.select(query, valores)[0]["TOTAL"] == 1
+			if self.conexion.select(query, valores)[0]["TOTAL"] == 1:
+				logeado = OK
+			else:
+				logeado = NOT_FOUND
 		return logeado
 
 	def guardar(self) -> bool:
@@ -68,3 +72,17 @@ class Adoptante(Persona):
 			valores = [self.id_adoptante]
 			eliminado = self.conexion.send_query(query, valores)
 		return eliminado
+
+	def cargar_adoptante(self) -> bool:
+		cargado = False
+		if self.id_adoptante is not None or self.email is not None:
+			query = "CALL SPS_obtenerAdoptante(%s, %s)"
+			valores = [self.id_adoptante, self.email]
+			resultado = self.conexion.select(query, valores)
+			if resultado:
+				resultado = resultado[0]
+				for atributo in self.__dict__:
+					if atributo != "conexion":
+						self.__setattr__(atributo, resultado[atributo])
+				cargado = True
+		return cargado
