@@ -69,12 +69,18 @@ components:
           minLength: 8
           maxLength: 14
           example: 22 91 55 55 55
-        correo_electronico:
+        email:
           description: Direccion de correo de la persona
           type: string
           minLength: 5
           maxLength: 320
           example: correo@correo.com
+        password:
+          description: Contraseña de la persona
+          type: string
+          minLength: 8
+          maxLength: 32
+          example: contraChida
         fecha_nacimiento:
           description: Fecha de nacimiento de la persona
           type: string

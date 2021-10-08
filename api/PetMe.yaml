@@ -73,7 +73,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'componentes.yaml#/components/schemas/adoptante'
+              allOf:
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+              properties:
+                localidad:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                  maximum: 999
+                  example: 12
+                estado:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                  maximum: 32
+                  example: 28
+                vivienda:
+                  type: string
+                  minLength: 3
+                  maxLength: 150
+                  example: Un ranchito
         required: true
       responses:
         201:
