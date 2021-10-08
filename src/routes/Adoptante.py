@@ -4,7 +4,7 @@ from flask import Blueprint, Response, request, session
 
 from src.model.Adoptante import Adoptante
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_ACCEPTABLE, OK
+from src.routes.HTTPStatus import NOT_ACCEPTABLE, OK, RESOURCE_CREATED
 from src.util.Util import incluidos
 
 rutas_adoptante = Blueprint("rutas_adoptante", __name__)
@@ -36,4 +36,23 @@ def login():
 					status=estado,
 					mimetype="application/json"
 				)
+	return respuesta
+
+
+@rutas_adoptante.route("/adoptantes", methods=["POST"])
+def registrar():
+	respuesta = Response(status=NOT_ACCEPTABLE)
+	requeridos = {"nombre", "sexo"}
+	vals = request.json
+	if incluidos(requeridos, vals):
+		adoptante = Adoptante()
+		adoptante.cargar_de_json(vals)
+		estado = adoptante.guardar()
+		respuesta = Response(status=estado)
+		if estado == RESOURCE_CREATED:
+			respuesta = Response(
+				json.dumps(adoptante.jsonificar()),
+				status=estado,
+				mimetype="application/json"
+			)
 	return respuesta

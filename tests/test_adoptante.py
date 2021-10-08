@@ -1,13 +1,13 @@
 from src.model.Adoptante import Adoptante
-from src.routes.HTTPStatus import OK
+from src.routes.HTTPStatus import CONFLICT, OK, RESOURCE_CREATED
 
 adoptante = Adoptante()
 adoptante.nombre = "Miguel Joaquin"
 
 
 def test_guardar():
-	assert adoptante.guardar() == True
-	assert adoptante.id_adoptante is not None
+	estado = adoptante.guardar()
+	assert estado == RESOURCE_CREATED or CONFLICT
 
 
 def test_actualizar():
