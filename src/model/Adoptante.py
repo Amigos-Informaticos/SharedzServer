@@ -48,8 +48,8 @@ class Adoptante(Persona):
 			estado = CONFLICT
 		return estado
 
-	def actualizar(self) -> bool:
-		actualizado: bool = False
+	def actualizar(self) -> int:
+		estado: int = BAD_REQUEST
 		if self.id_adoptante is not None:
 			query = "CALL SPA_actualizarAdoptante(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 			valores = [
@@ -66,8 +66,10 @@ class Adoptante(Persona):
 				self.password,
 				self.vivienda
 			]
-			actualizado = self.conexion.send_query(query, valores)
-		return actualizado
+			estado = NOT_FOUND
+			if self.conexion.send_query(query, valores):
+				estado = OK
+		return estado
 
 	def eliminar(self) -> bool:
 		eliminado: bool = False

@@ -14,7 +14,7 @@ def test_actualizar():
 	adoptante.email = "correo@correo.com"
 	adoptante.cargar_adoptante()
 	adoptante.set_password("contraChida")
-	assert adoptante.actualizar() == True
+	assert adoptante.actualizar() == OK
 
 
 def test_login():
