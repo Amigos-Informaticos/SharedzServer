@@ -59,7 +59,7 @@ jobs:
       - name: Desplegar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ EDSON_GITHUB_TOKEN }}
+          github_token: ${{ secrets.EDSON_GITHUB_TOKEN }}
           publish_dir: specs
 
   buildx:
