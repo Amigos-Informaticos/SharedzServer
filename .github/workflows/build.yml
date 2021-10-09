@@ -54,10 +54,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Especificación PetMe
-          path: ./PetMeBundle.yaml
+          path: PetMeBundle.yaml
 
   buildx:
-    needs: generar_spec
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Copiar Repositorio
