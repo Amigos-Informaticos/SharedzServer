@@ -6,14 +6,6 @@ on:
       - master
 
 jobs:
-  generar_spec:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Validar especificación
-        uses: mpetrunic/swagger-cli-action@v1.0.0
-        with:
-          command: "validate api/PetMe.yaml"
-
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -41,8 +33,31 @@ jobs:
           name: Reporte PyTest
           path: ./reports
 
-  buildx:
+  generar_spec:
     needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copiar repositorio
+        uses: actions/checkout@v2
+
+      - name: Validar especificación
+        uses: mpetrunic/swagger-cli-action@v1.0.0
+        with:
+          command: "validate api/PetMe.yaml"
+
+      - name: Compilar especificación
+        uses: mpetrunic/swagger-cli-action@v1.0.0
+        with:
+          command: bundle -o PetMeBundle.yaml -t yaml api/PetMe.yaml
+
+      - name: Subir especificación
+        uses: actions/upload-artifact@v2
+        with:
+          name: Especificación PetMe
+          path: ./PetMeBundle.yaml
+
+  buildx:
+    needs: generar_spec
     runs-on: ubuntu-latest
     steps:
       - name: Copiar Repositorio
