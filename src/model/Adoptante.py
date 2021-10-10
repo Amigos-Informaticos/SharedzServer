@@ -122,5 +122,8 @@ class Adoptante(Persona):
 		else:
 			for atributo in self.__dict__:
 				if atributo != "id_adoptante" and atributo != "conexion":
-					diccionario[atributo] = self.__getattribute__(atributo)
+					if atributo == "fecha_nacimiento":
+						diccionario[atributo] = str(self.fecha_nacimiento)
+					else:
+						diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario
