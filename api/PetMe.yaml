@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: PetMeAPI
   description: Especificación de la API que expone los servicios provistos por el servidor de PetMe
-  version: 0.0.1
+  version: 0.1.3
   contact:
     name: Edson Manuel Carballo Vera
     email: edsonmanuelcarballovera@gmail.com
@@ -12,127 +12,8 @@ servers:
     url: 'http://amigosinformaticos.ddns.net:42070'
 paths:
   /login:
-    description: Endpoint para que los usuarios puedan inicar sesion
-    post:
-      summary: Crea una nueva sesion del usuario en el sistema
-      tags:
-        - Usuario general
-      operationId: login
-      requestBody:
-        description: Credenciales para iniciar sesion
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  minLength: 5
-                  maxLength: 320
-                  example: correo@correo.com
-                password:
-                  type: string
-                  minLength: 8
-                  maxLength: 100
-                  example: contraChida
-        required: true
-      responses:
-        200:
-          description: El usuario ha iniciado sesion exitosamente
-          content:
-            application/json:
-              schema:
-                properties:
-                  token:
-                    description: Token identificador del usuario
-                    type: string
-                  id:
-                    description: id del comensal
-                    type: integer
-                    format: int32
-                    minimum: 1
-                    maximum: 999
-                    example: 24
-        400:
-          description: Peticion erronea o malformada
-        404:
-          description: El usuario no se encuentra registrado
-        406:
-          description: La solicitud no es aceptable por falta de valores
+    $ref: './login.yaml'
   /adoptantes:
-    description: Catalogo de adoptantes registrados
-    #    get:
-    #      summary: Retorna los adoptantes que coincidan con algun parametro
-    #    TODO
-    post:
-      summary: Registra un nuevo adoptante
-      tags:
-        - Adoptante
-      operationId: registrarAdoptante
-      requestBody:
-        description: Informacion del nuevo adoptante
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: 'componentes.yaml#/components/schemas/adoptante'
-              properties:
-                localidad:
-                  type: integer
-                  format: int32
-                  minimum: 1
-                  maximum: 999
-                  example: 12
-                estado:
-                  type: integer
-                  format: int32
-                  minimum: 1
-                  maximum: 32
-                  example: 28
-                vivienda:
-                  type: string
-                  minLength: 3
-                  maxLength: 150
-                  example: Un ranchito
-        required: true
-      responses:
-        201:
-          description: Adoptante registrado
-          content:
-            application/json:
-              schema:
-                $ref: 'componentes.yaml#/components/schemas/adoptante'
-        400:
-          description: Peticion erronea o malformada
-        409:
-          description: El adoptante ya ha sido registrado previamente
+    $ref: './adoptantes.yaml'
   /adoptantes/{id_adoptante}:
-    description: Un adoptante identificado por su id
-    get:
-      summary: Retorna la informacion del comensal seleccionado
-      tags:
-        - Adoptante
-      operationId: obtenerAdoptante
-      parameters:
-        - name: id_adoptante
-          description: Id del adoptante cuya informacion se desea recuperar
-          in: path
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 999
-          required: true
-      responses:
-        "200":
-          description: Se ha retornado la informacion correspondiente al adoptante
-          content:
-            application/json:
-              schema:
-                $ref: 'componentes.yaml#/components/schemas/adoptante'
-        "400":
-          description: Peticion erronea o malformada
-        "401":
-          description: Usuario no autenticado
-        "404":
-          description: El adoptante buscado no se encuentra registrado
-        "419":
-          description: La sesion del usuario ha expirado
+    $ref: './adoptantes{id}.yaml'

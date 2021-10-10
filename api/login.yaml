@@ -1,0 +1,46 @@
+description: Crea una nueva sesión del usuario en el sistema
+post:
+  summary: Endpoint para que los usuarios puedan iniciar sesión en el servidor
+  tags:
+    - Usuario general
+  operationId: login
+  requestBody:
+    description: Credenciales para iniciar sesion
+    content:
+      application/json:
+        schema:
+          properties:
+            email:
+              type: string
+              minLength: 5
+              maxLength: 320
+              example: correo@correo.com
+            password:
+              type: string
+              minLength: 8
+              maxLength: 100
+              example: contraChida
+    required: true
+  responses:
+    200:
+      description: El usuario ha iniciado sesion exitosamente
+      content:
+        application/json:
+          schema:
+            properties:
+              token:
+                description: Token identificador del usuario
+                type: string
+              id:
+                description: id del comensal
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 999
+                example: 24
+    400:
+      description: Peticion erronea o malformada
+    404:
+      description: El usuario no se encuentra registrado
+    406:
+      description: La solicitud no es aceptable por falta de valores
