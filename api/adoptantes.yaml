@@ -46,6 +46,14 @@ get:
             type: array
             description: Arreglo de adoptantes
             items:
+              anyOf:
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+    204:
+      description: No se ha encontrado ninguna coincidencia
+    400:
+      description: Peticion erronea o malformada
 post:
   summary: Registra un nuevo adoptante
   tags:
@@ -84,6 +92,12 @@ post:
         application/json:
           schema:
             $ref: 'componentes.yaml#/components/schemas/adoptante'
+      links:
+        ObtenerInfoAdoptante:
+          operationId: obtenerAdoptante
+          description: El id devuelto en esta operacion se usa para obtener la informacion del adoptante
+          parameters:
+            id_adoptante: '$response.body#/id_persona'
     400:
       description: Peticion erronea o malformada
     409:
