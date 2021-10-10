@@ -16,7 +16,6 @@ class Adoptante(Persona):
 			        "WHERE email = %s AND password = %s"
 			valores = [self.email, self.password]
 			resultado = self.conexion.select(query, valores)
-			print(resultado)
 			if resultado[0]["TOTAL"] == 1:
 				logeado = OK
 			else:
@@ -107,13 +106,16 @@ class Adoptante(Persona):
 		cargado: bool = False
 		for atributo in self.__dict__:
 			if atributo in valores:
-				self.__setattr__(atributo, valores[atributo])
+				if atributo == "password":
+					self.set_password(valores[atributo])
+				else:
+					self.__setattr__(atributo, valores[atributo])
 				cargado = True
 		return cargado
 
 	def jsonificar(self, valores_deseados=None) -> dict:
 		diccionario = {"id_persona": self.id_adoptante}
-		if valores_deseados is None:
+		if valores_deseados is not None:
 			for atributo in self.__dict__:
 				if atributo in valores_deseados:
 					diccionario[atributo] = self.__getattribute__(atributo)
