@@ -13,9 +13,9 @@ def test_guardar():
 
 
 def test_actualizar():
-	adoptante.email = "correo@correo.com"
 	assert adoptante.id_adoptante is not None
 	adoptante.cargar_adoptante()
+	adoptante.email = "correo@correo.com"
 	adoptante.set_password("contraChida")
 	assert adoptante.actualizar() == OK
 
@@ -27,6 +27,7 @@ def test_login():
 	assert adoptante.login() == OK
 
 
+@pytest.mark.dependency(depends=["test_login"])
 def test_cargar():
 	adoptante.email = "correo@correo.com"
 	cargado = adoptante.cargar_adoptante()

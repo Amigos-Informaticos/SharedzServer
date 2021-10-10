@@ -15,7 +15,9 @@ class Adoptante(Persona):
 			        "INNER JOIN Persona ON Adoptante.id_adoptante = Persona.id_persona " \
 			        "WHERE email = %s AND password = %s"
 			valores = [self.email, self.password]
-			if self.conexion.select(query, valores)[0]["TOTAL"] == 1:
+			resultado = self.conexion.select(query, valores)
+			print(resultado)
+			if resultado[0]["TOTAL"] == 1:
 				logeado = OK
 			else:
 				logeado = NOT_FOUND
