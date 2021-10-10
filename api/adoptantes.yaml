@@ -1,7 +1,51 @@
 description: Catalogo de adoptantes registrados
-  #    get:
-#      summary: Retorna los adoptantes que coincidan con algun parametro
-#    TODO
+get:
+  summary: Retorna los adoptantes que coincidan con algun parametro
+  tags:
+    - Adoptante
+  operationId: obtenerAdoptantes
+  parameters:
+    - name: nombre
+      description: Nombre del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 40
+      required: false
+    - name: apellido_paterno
+      description: Apellido paterno del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 35
+      required: false
+    - name: apellido_materno
+      description: Apellido materno del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 35
+      required: false
+    - name: email
+      description: Correo electronico del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 5
+        maxLength: 320
+      required: false
+  responses:
+    200:
+      description: Se ha encontrado por lo menos un adoptante que coincide con algun criterio
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Arreglo de adoptantes
+            items:
 post:
   summary: Registra un nuevo adoptante
   tags:

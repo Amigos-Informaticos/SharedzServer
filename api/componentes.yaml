@@ -3,6 +3,7 @@ components:
     localidad:
       type: object
       description: Localidad
+      required: [id_localidad]
       properties:
         id_localidad:
           description: Identificador de la localidad
@@ -20,6 +21,7 @@ components:
     estado:
       type: object
       description: Un estado de la republica
+      required: [id_estado]
       properties:
         id_estado:
           description: Identificador del estado
@@ -37,6 +39,7 @@ components:
     persona:
       type: object
       description: Una persona
+      required: [nombre]
       properties:
         id_persona:
           description: Identificador numerico del persona
@@ -97,6 +100,7 @@ components:
     vivienda:
       type: object
       description: Informacion de una vivienda
+      required: [id_vivienda]
       properties:
         id_vivienda:
           description: Identificador de la vivienda
