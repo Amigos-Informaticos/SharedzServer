@@ -72,3 +72,9 @@ def get_adoptante(id_adoptante: int):
 			mimetype="application/json"
 		)
 	return respuesta
+
+
+@rutas_adoptante.route("/adoptantes/<id_adoptante>", methods=["POST"])
+@Auth.requires_token
+def actualizar_adoptante(id_adoptante):
+	pass
