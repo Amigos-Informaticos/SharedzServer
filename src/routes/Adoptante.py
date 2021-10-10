@@ -56,3 +56,10 @@ def registrar():
 				mimetype="application/json"
 			)
 	return respuesta
+
+
+@rutas_adoptante.route("/adoptantes/<id_adoptante>", methods=["GET"])
+def get_adoptante(id_adoptante: int):
+	respuesta = Response(status=NOT_ACCEPTABLE)
+	vals = request.json
+	return respuesta
