@@ -14,6 +14,7 @@ def test_guardar():
 
 def test_actualizar():
 	adoptante.email = "correo@correo.com"
+	assert adoptante.id_adoptante is not None
 	adoptante.cargar_adoptante()
 	adoptante.set_password("contraChida")
 	assert adoptante.actualizar() == OK
