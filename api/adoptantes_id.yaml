@@ -20,7 +20,6 @@ get:
         schema:
           type: array
           description: Arreglo con los nombres de las propiedades que se desean retornar
-          required: []
           items:
             type: string
           example:
