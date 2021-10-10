@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src.connection.EasyConnection import EasyConnection
+from src.util.Util import md5
 
 
 class Persona(ABC):
@@ -16,6 +17,9 @@ class Persona(ABC):
 		self.email = None
 		self.password = None
 		self.conexion = EasyConnection.build_from_static()
+
+	def set_password(self, password: str) -> None:
+		self.password = md5(password)
 
 	@abstractmethod
 	def login(self) -> bool:

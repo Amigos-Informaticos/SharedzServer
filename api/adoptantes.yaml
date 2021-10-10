@@ -1,0 +1,104 @@
+description: Catalogo de adoptantes registrados
+get:
+  summary: Retorna los adoptantes que coincidan con algun parametro
+  tags:
+    - Adoptante
+  operationId: obtenerAdoptantes
+  parameters:
+    - name: nombre
+      description: Nombre del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 40
+      required: false
+    - name: apellido_paterno
+      description: Apellido paterno del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 35
+      required: false
+    - name: apellido_materno
+      description: Apellido materno del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 35
+      required: false
+    - name: email
+      description: Correo electronico del adoptante
+      in: query
+      schema:
+        type: string
+        minLength: 5
+        maxLength: 320
+      required: false
+  responses:
+    200:
+      description: Se ha encontrado por lo menos un adoptante que coincide con algun criterio
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Arreglo de adoptantes
+            items:
+              anyOf:
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+                - $ref: 'componentes.yaml#/components/schemas/adoptante'
+    204:
+      description: No se ha encontrado ninguna coincidencia
+    400:
+      description: Peticion erronea o malformada
+post:
+  summary: Registra un nuevo adoptante
+  tags:
+    - Adoptante
+  operationId: registrarAdoptante
+  requestBody:
+    description: Informacion del nuevo adoptante
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: 'componentes.yaml#/components/schemas/adoptante'
+          properties:
+            localidad:
+              type: integer
+              format: int32
+              minimum: 1
+              maximum: 999
+              example: 12
+            estado:
+              type: integer
+              format: int32
+              minimum: 1
+              maximum: 32
+              example: 28
+            vivienda:
+              type: string
+              minLength: 3
+              maxLength: 150
+              example: Un ranchito
+    required: true
+  responses:
+    201:
+      description: Adoptante registrado
+      content:
+        application/json:
+          schema:
+            $ref: 'componentes.yaml#/components/schemas/adoptante'
+      links:
+        ObtenerInfoAdoptante:
+          operationId: obtenerAdoptante
+          description: El id devuelto en esta operacion se usa para obtener la informacion del adoptante
+          parameters:
+            id_adoptante: '$response.body#/id_persona'
+    400:
+      description: Peticion erronea o malformada
+    409:
+      description: El adoptante ya ha sido registrado previamente

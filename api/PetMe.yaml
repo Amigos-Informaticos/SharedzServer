@@ -1,0 +1,19 @@
+openapi: 3.0.0
+info:
+  title: PetMeAPI
+  description: Especificación de la API que expone los servicios provistos por el servidor de PetMe
+  version: 0.2.0
+  contact:
+    name: Edson Manuel Carballo Vera
+    email: edsonmanuelcarballovera@gmail.com
+    url: https://twitter.com/EdsonManuelVera
+servers:
+  - description: Producción
+    url: 'http://amigosinformaticos.ddns.net:42070'
+paths:
+  /login:
+    $ref: './login.yaml'
+  /adoptantes:
+    $ref: './adoptantes.yaml'
+  /adoptantes/{id_adoptante}:
+    $ref: './adoptantes_id.yaml'

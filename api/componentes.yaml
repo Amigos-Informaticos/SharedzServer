@@ -1,20 +1,9 @@
-openapi: 3.0.0
-info:
-  title: PetMeAPI
-  description: Especificación de la API que expone los servicios provistos por el servidor de PetMe
-  version: 0.0.1
-  contact:
-    name: Edson Manuel Carballo Vera
-    email: edsonmanuelcarballovera@gmail.com
-    url: https://twitter.com/EdsonManuelVera
-servers:
-  - description: Producción
-    url: 'http://amigosinformaticos.ddns.net:42070'
 components:
   schemas:
     localidad:
       type: object
       description: Localidad
+      required: [id_localidad]
       properties:
         id_localidad:
           description: Identificador de la localidad
@@ -32,6 +21,7 @@ components:
     estado:
       type: object
       description: Un estado de la republica
+      required: [id_estado]
       properties:
         id_estado:
           description: Identificador del estado
@@ -49,6 +39,7 @@ components:
     persona:
       type: object
       description: Una persona
+      required: [nombre]
       properties:
         id_persona:
           description: Identificador numerico del persona
@@ -81,12 +72,18 @@ components:
           minLength: 8
           maxLength: 14
           example: 22 91 55 55 55
-        correo_electronico:
+        email:
           description: Direccion de correo de la persona
           type: string
           minLength: 5
           maxLength: 320
           example: correo@correo.com
+        password:
+          description: Contraseña de la persona
+          type: string
+          minLength: 8
+          maxLength: 32
+          example: contraChida
         fecha_nacimiento:
           description: Fecha de nacimiento de la persona
           type: string
@@ -103,6 +100,7 @@ components:
     vivienda:
       type: object
       description: Informacion de una vivienda
+      required: [id_vivienda]
       properties:
         id_vivienda:
           description: Identificador de la vivienda
@@ -125,35 +123,3 @@ components:
       properties:
         vivienda:
           $ref: '#/components/schemas/vivienda'
-
-paths:
-  /adoptantes/{id_adoptante}:
-    description: Catalogo de adoptantes registrados
-    get:
-      summary: Retorna la informacion del comensal seleccionado
-      tags:
-        - Adoptante
-      parameters:
-        - name: id_adoptante
-          description: Id del adoptante cuya informacion se desea recuperar
-          in: path
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 999
-          required: true
-      responses:
-        "200":
-          description: Se ha retornado la informacion correspondiente al adoptante
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/adoptante'
-        "400":
-          description: Peticion erronea o malformada
-        "401":
-          description: Usuario no autenticado
-        "404":
-          description: El adoptante buscado no se encuentra registrado
-        "419":
-          description: La sesion del usuario ha expirado

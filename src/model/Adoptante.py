@@ -1,4 +1,5 @@
 from src.model.Persona import Persona
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_FOUND, OK, RESOURCE_CREATED
 
 
 class Adoptante(Persona):
@@ -7,19 +8,24 @@ class Adoptante(Persona):
 		self.id_adoptante = None
 		self.vivienda = None
 
-	def login(self) -> bool:
-		logeado: bool = False
+	def login(self) -> int:
+		logeado: int = BAD_REQUEST
 		if self.email is not None and self.password is not None:
 			query = "SELECT COUNT(*) AS TOTAL FROM Adoptante " \
 			        "INNER JOIN Persona ON Adoptante.id_adoptante = Persona.id_persona " \
-			        "WHERE correo_electronico = %s AND contrasena = %s"
+			        "WHERE email = %s AND password = %s"
 			valores = [self.email, self.password]
-			logeado = self.conexion.select(query, valores)[0]["TOTAL"] == 1
+			resultado = self.conexion.select(query, valores)
+			print(resultado)
+			if resultado[0]["TOTAL"] == 1:
+				logeado = OK
+			else:
+				logeado = NOT_FOUND
 		return logeado
 
-	def guardar(self) -> bool:
-		guardado: bool = False
-		if self.nombre is not None:
+	def guardar(self) -> int:
+		estado: int = BAD_REQUEST
+		if self.nombre is not None and not self.esta_registrado():
 			query = "CALL SPI_registrarAdoptante(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 			valores = [
 				self.nombre,
@@ -37,11 +43,15 @@ class Adoptante(Persona):
 			resultado = self.conexion.select(query, valores)
 			if resultado:
 				self.id_adoptante = resultado[0]["_id_adoptante"]
-				guardado = True
-		return guardado
+				estado = RESOURCE_CREATED
+			else:
+				estado = CONFLICT
+		else:
+			estado = CONFLICT
+		return estado
 
-	def actualizar(self) -> bool:
-		actualizado: bool = False
+	def actualizar(self) -> int:
+		estado: int = BAD_REQUEST
 		if self.id_adoptante is not None:
 			query = "CALL SPA_actualizarAdoptante(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 			valores = [
@@ -58,8 +68,10 @@ class Adoptante(Persona):
 				self.password,
 				self.vivienda
 			]
-			actualizado = self.conexion.send_query(query, valores)
-		return actualizado
+			estado = NOT_FOUND
+			if self.conexion.send_query(query, valores):
+				estado = OK
+		return estado
 
 	def eliminar(self) -> bool:
 		eliminado: bool = False
@@ -68,3 +80,45 @@ class Adoptante(Persona):
 			valores = [self.id_adoptante]
 			eliminado = self.conexion.send_query(query, valores)
 		return eliminado
+
+	def esta_registrado(self):
+		registrado = False
+		if self.email is not None:
+			query = "SELECT COUNT(*) AS TOTAL FROM Persona WHERE email = %s"
+			valores = [self.email]
+			registrado = self.conexion.select(query, valores)[0]["TOTAL"] == 1
+		return registrado
+
+	def cargar_adoptante(self) -> bool:
+		cargado = False
+		if self.id_adoptante is not None or self.email is not None:
+			query = "CALL SPS_obtenerAdoptante(%s, %s)"
+			valores = [self.id_adoptante, self.email]
+			resultado = self.conexion.select(query, valores)
+			if resultado:
+				resultado = resultado[0]
+				for atributo in self.__dict__:
+					if atributo in resultado:
+						self.__setattr__(atributo, resultado[atributo])
+				cargado = True
+		return cargado
+
+	def cargar_de_json(self, valores: dict) -> bool:
+		cargado: bool = False
+		for atributo in self.__dict__:
+			if atributo in valores:
+				self.__setattr__(atributo, valores[atributo])
+				cargado = True
+		return cargado
+
+	def jsonificar(self, valores_deseados=None) -> dict:
+		diccionario = {"id_persona": self.id_adoptante}
+		if valores_deseados is None:
+			for atributo in self.__dict__:
+				if atributo in valores_deseados:
+					diccionario[atributo] = self.__getattribute__(atributo)
+		else:
+			for atributo in self.__dict__:
+				if atributo != "id_adoptante" and atributo != "conexion":
+					diccionario[atributo] = self.__getattribute__(atributo)
+		return diccionario
