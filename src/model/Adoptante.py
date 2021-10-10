@@ -111,9 +111,14 @@ class Adoptante(Persona):
 				cargado = True
 		return cargado
 
-	def jsonificar(self) -> dict:
+	def jsonificar(self, valores_deseados=None) -> dict:
 		diccionario = {"id_persona": self.id_adoptante}
-		for atributo in self.__dict__:
-			if atributo != "id_adoptante" and atributo != "conexion":
-				diccionario[atributo] = self.__getattribute__(atributo)
+		if valores_deseados is None:
+			for atributo in self.__dict__:
+				if atributo in valores_deseados:
+					diccionario[atributo] = self.__getattribute__(atributo)
+		else:
+			for atributo in self.__dict__:
+				if atributo != "id_adoptante" and atributo != "conexion":
+					diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario
