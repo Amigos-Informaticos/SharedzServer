@@ -1,5 +1,6 @@
 from src.model.Persona import Persona
-from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_FOUND, OK, RESOURCE_CREATED
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_ACCEPTABLE, NOT_FOUND, OK, \
+	RESOURCE_CREATED
 
 
 class Adoptante(Persona):
@@ -72,13 +73,19 @@ class Adoptante(Persona):
 				estado = OK
 		return estado
 
-	def eliminar(self) -> bool:
-		eliminado: bool = False
+	def eliminar(self) -> int:
+		estado: int = BAD_REQUEST
 		if self.id_adoptante is not None:
-			query = "CALL SPE_eliminarAdoptante(%s)"
-			valores = [self.id_adoptante]
-			eliminado = self.conexion.send_query(query, valores)
-		return eliminado
+			if self.cargar_adoptante():
+				query = "CALL SPE_eliminarAdoptante(%s)"
+				valores = [self.id_adoptante]
+				if self.conexion.send_query(query, valores):
+					estado = OK
+				else:
+					estado = NOT_ACCEPTABLE
+			else:
+				estado = NOT_FOUND
+		return estado
 
 	def esta_registrado(self):
 		registrado = False

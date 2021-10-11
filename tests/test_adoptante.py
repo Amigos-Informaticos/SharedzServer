@@ -36,4 +36,4 @@ def test_cargar():
 
 @pytest.mark.dependency(depends=["test_login"])
 def test_eliminar():
-	assert adoptante.eliminar() == True
+	assert adoptante.eliminar() == OK

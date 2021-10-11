@@ -77,4 +77,28 @@ def get_adoptante(id_adoptante: int):
 @rutas_adoptante.route("/adoptantes/<id_adoptante>", methods=["POST"])
 @Auth.requires_token
 def actualizar_adoptante(id_adoptante):
-	pass
+	respuesta = Response(status=NOT_FOUND)
+	vals = request.json
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	adoptante.cargar_de_json(vals)
+	estado = adoptante.actualizar()
+	respuesta = Response(status=estado)
+	if estado == OK:
+		adoptante.cargar_adoptante()
+		respuesta = Response(
+			json.dumps(adoptante.jsonificar()),
+			status=OK,
+			mimetype="application/json"
+		)
+	return respuesta
+
+
+@rutas_adoptante.delete("/adoptantes/<id_adoptante>")
+@Auth.requires_token
+def eliminar_adoptante(id_adoptante):
+	respuesta = Response(status=NOT_FOUND)
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	respuesta = Response(status=adoptante.eliminar())
+	return respuesta
