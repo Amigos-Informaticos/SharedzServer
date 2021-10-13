@@ -1,3 +1,4 @@
+from src.model.Refugio import Refugio
 from src.routes.HTTPStatus import OK, RESOURCE_CREATED
 
 refugio = Refugio()
