@@ -1,15 +1,16 @@
-description: Un adoptante identificado por su id
+description: Un refugio identificado por su id
 get:
-  summary: Retorna la informacion del comensal seleccionado
+  summary: Retorna la informacion del refugio seleccionado
   tags:
-    - Adoptante
-  operationId: obtenerAdoptante
+    - Refugio
+  operationId: obtenerRefugio
   parameters:
-    - name: id_adoptante
-      description: Id del adoptante cuya informacion se desea recuperar
+    - name: id_refugio
+      description: Id del refugio cuya informacion se desea recuperar
       in: path
       schema:
         type: integer
+        format: int32
         minimum: 1
         maximum: 999
       required: true
@@ -20,24 +21,25 @@ get:
         type: string
       required: true
   requestBody:
-    description: Datos solicitados del adoptante
+    description: Datos solicitados del refugio
     content:
       application/json:
         schema:
-          type: array
           description: Arreglo con los nombres de las propiedades que se desean retornar
+          type: array
           items:
             type: string
           example:
-            - id_adoptante
+            - id_refugio
             - nombre
+            - email
   responses:
     200:
-      description: Se ha retornado la informacion correspondiente al adoptante
+      description: Se ha retornado la informacion correspondiente al refugio
       content:
         application/json:
           schema:
-            $ref: 'componentes.yaml#/components/schemas/adoptante'
+            $ref: 'componentes.yaml#/components/schemas/refugio'
     400:
       description: Peticion erronea o malformada
     401:
@@ -47,17 +49,18 @@ get:
     419:
       description: La sesion del usuario ha expirado
 post:
-  summary: Actualiza la informacion de un adoptante identificado por su id
+  summary: Actualiza la informacion de un refugio identificado por su id
   tags:
-    - Adoptante
+    - Refugio
     - Actualizar
-  operationId: actualizarAdoptante
+  operationId: actualizarRefugio
   parameters:
-    - name: id_adoptante
-      description: Id del adoptante cuya informacion se desea actualizar
+    - name: id_refugio
+      description: Id del refugio cuya informacion se desea actualizar
       in: path
       schema:
         type: integer
+        format: int32
         minimum: 1
         maximum: 999
       required: true
@@ -68,18 +71,18 @@ post:
         type: string
       required: true
   requestBody:
-    description: Informacion del adoptante actualizado
+    description: Informacion del refugio actualizada
     content:
       application/json:
         schema:
-          $ref: 'componentes.yaml#/components/schemas/adoptante'
+          $ref: 'componentes.yaml#/components/schemas/refugio'
   responses:
     200:
-      description: Se ha actualizado la informacion del adoptante
+      description: Se ha actualizado la informacion del refugio
       content:
         application/json:
           schema:
-            $ref: 'componentes.yaml#/components/schemas/adoptante'
+            $ref: 'componentes.yaml#/components/schemas/refugio'
     400:
       description: Peticion erronea o malformada
     401:
@@ -89,17 +92,18 @@ post:
     419:
       description: La sesion del usuario ha expirado
 delete:
-  summary: Elimina un adoptante registrado
+  summary: Elimina un refugio identificado por su id
   tags:
-    - Adoptante
+    - Refugio
     - Eliminar
-  operationId: eliminarAdoptante
+  operationId: eliminarRefugio
   parameters:
-    - name: id_adoptante
-      description: Id del adoptante cuya informacion se desea recuperar
+    - name: id_refugio
+      description: Id del refugio cuya informacion se desea actualizar
       in: path
       schema:
         type: integer
+        format: int32
         minimum: 1
         maximum: 999
       required: true
@@ -111,7 +115,7 @@ delete:
       required: true
   responses:
     200:
-      description: Se ha eliminado el adoptante indicado
+      description: Se ha eliminado el refugio indicado
     400:
       description: Peticion erronea o malformada
     401:

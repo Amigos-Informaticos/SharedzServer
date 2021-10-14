@@ -1,5 +1,17 @@
 components:
   schemas:
+    telefono:
+      description: Numero telefonico
+      type: string
+      minLength: 8
+      maxLength: 14
+      example: 22 91 55 55 55
+    email:
+      description: Direccion de correo
+      type: string
+      minLength: 5
+      maxLength: 320
+      example: correo@correo.com
     localidad:
       type: object
       description: Localidad
@@ -67,17 +79,9 @@ components:
           maxLength: 35
           example: Arriaga
         telefono:
-          description: Numero telefonico de la persona
-          type: string
-          minLength: 8
-          maxLength: 14
-          example: 22 91 55 55 55
+          $ref: '#/components/schemas/telefono'
         email:
-          description: Direccion de correo de la persona
-          type: string
-          minLength: 5
-          maxLength: 320
-          example: correo@correo.com
+          $ref: '#/components/schemas/email'
         password:
           description: Contraseña de la persona
           type: string
@@ -123,3 +127,47 @@ components:
       properties:
         vivienda:
           $ref: '#/components/schemas/vivienda'
+    refugio:
+      type: object
+      description: Un refugio para
+      required: [nombre]
+      properties:
+        id_refugio:
+          description: Identificador del refugio
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 999
+          example: 62
+        nombre:
+          description: Nombre del refugio
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: Refugio patitas
+        estado:
+          $ref: '#/components/schemas/estado'
+        localidad:
+          $ref: '#/components/schemas/localidad'
+        direccion:
+          description: Direccion del refugio
+          type: string
+          minLength: 10
+          maxLength: 200
+          example: Calle Huitlacoche
+        pagina_web:
+          description: Pagina web del refugio
+          type: string
+          minLength: 5
+          maxLength: 200
+          example: www.refugiopatitas.com
+        telefono:
+          $ref: '#/components/schemas/telefono'
+        email:
+          $ref: '#/components/schemas/email'
+        fundacion:
+          description: Fundacion a la cual pertenece el refugio
+          type: string
+          minLength: 5
+          maxLength: 150
+          example: Ayuda a mastocas en necesidad
