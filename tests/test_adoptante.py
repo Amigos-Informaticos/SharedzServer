@@ -9,6 +9,7 @@ adoptante.nombre = "Miguel Joaquin"
 
 def test_guardar():
 	estado = adoptante.guardar()
+	print(estado)
 	assert estado == RESOURCE_CREATED or estado == CONFLICT
 
 
@@ -36,4 +37,4 @@ def test_cargar():
 
 @pytest.mark.dependency(depends=["test_login"])
 def test_eliminar():
-	assert adoptante.eliminar() == True
+	assert adoptante.eliminar() == OK

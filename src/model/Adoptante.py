@@ -1,5 +1,6 @@
 from src.model.Persona import Persona
-from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_FOUND, OK, RESOURCE_CREATED
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_ACCEPTABLE, NOT_FOUND, OK, \
+	RESOURCE_CREATED
 
 
 class Adoptante(Persona):
@@ -16,7 +17,6 @@ class Adoptante(Persona):
 			        "WHERE email = %s AND password = %s"
 			valores = [self.email, self.password]
 			resultado = self.conexion.select(query, valores)
-			print(resultado)
 			if resultado[0]["TOTAL"] == 1:
 				logeado = OK
 			else:
@@ -73,13 +73,19 @@ class Adoptante(Persona):
 				estado = OK
 		return estado
 
-	def eliminar(self) -> bool:
-		eliminado: bool = False
+	def eliminar(self) -> int:
+		estado: int = BAD_REQUEST
 		if self.id_adoptante is not None:
-			query = "CALL SPE_eliminarAdoptante(%s)"
-			valores = [self.id_adoptante]
-			eliminado = self.conexion.send_query(query, valores)
-		return eliminado
+			if self.cargar_adoptante():
+				query = "CALL SPE_eliminarAdoptante(%s)"
+				valores = [self.id_adoptante]
+				if self.conexion.send_query(query, valores):
+					estado = OK
+				else:
+					estado = NOT_ACCEPTABLE
+			else:
+				estado = NOT_FOUND
+		return estado
 
 	def esta_registrado(self):
 		registrado = False
@@ -107,18 +113,24 @@ class Adoptante(Persona):
 		cargado: bool = False
 		for atributo in self.__dict__:
 			if atributo in valores:
-				self.__setattr__(atributo, valores[atributo])
+				if atributo == "password":
+					self.set_password(valores[atributo])
+				else:
+					self.__setattr__(atributo, valores[atributo])
 				cargado = True
 		return cargado
 
 	def jsonificar(self, valores_deseados=None) -> dict:
 		diccionario = {"id_persona": self.id_adoptante}
-		if valores_deseados is None:
+		if valores_deseados is not None:
 			for atributo in self.__dict__:
 				if atributo in valores_deseados:
 					diccionario[atributo] = self.__getattribute__(atributo)
 		else:
 			for atributo in self.__dict__:
 				if atributo != "id_adoptante" and atributo != "conexion":
-					diccionario[atributo] = self.__getattribute__(atributo)
+					if atributo == "fecha_nacimiento":
+						diccionario[atributo] = str(self.fecha_nacimiento)
+					else:
+						diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario

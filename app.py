@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -14,7 +16,7 @@ config_server = ConfigServer("petMe")
 valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
 
 app.config["SECRET_KEY"] = valores_config["crypt_password"]
-app.config["PERMANENT_SESSION_LIFETIME"] = valores_config["token_ttl"]
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=valores_config["token_ttl"])
 app.config["SESSION_COOKIE_SECURE"] = True
 
 
@@ -24,4 +26,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-	app.run()
+	app.run(port=42070, ssl_context=("cert.pem", "key.pem"))
