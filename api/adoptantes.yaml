@@ -65,7 +65,28 @@ post:
     content:
       application/json:
         schema:
-          $ref: 'componentes.yaml#/components/schemas/adoptante'
+          allOf:
+            - $ref: 'componentes.yaml#/components/schemas/adoptante'
+          type: object
+          properties:
+            localidad:
+              description: Nombre de la localidad
+              type: string
+              minLength: 3
+              maxLength: 150
+              example: Tlanelhuayocan
+            estado:
+              description: Nombre del estado
+              type: string
+              minLength: 3
+              maxLength: 50
+              example: Veracruz
+            vivienda:
+              description: Tipo de vivienda
+              type: string
+              minLength: 3
+              maxLength: 100
+              example: Un ranchito
     required: true
   responses:
     201:

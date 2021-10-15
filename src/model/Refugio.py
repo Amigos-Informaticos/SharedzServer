@@ -74,6 +74,14 @@ class Refugio:
 				cargado = True
 		return cargado
 
+	def cargar_de_json(self, valores: dict) -> bool:
+		cargado: bool = False
+		for atributo in self.__dict__:
+			if atributo in valores:
+				self.__setattr__(atributo, valores[atributo])
+				cargado = True
+		return cargado
+
 	def eliminar(self) -> int:
 		estado = BAD_REQUEST
 		if self.id_refugio is not None:
