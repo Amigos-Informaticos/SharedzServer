@@ -19,7 +19,7 @@ def registrar():
 		refugio.cargar_de_json(vals)
 		estado = refugio.guardar()
 		respuesta = Response(status=estado)
-		if estado == OK:
+		if estado == RESOURCE_CREATED:
 			respuesta = Response(
 				json.dumps(refugio.jsonificar()),
 				status=estado,
