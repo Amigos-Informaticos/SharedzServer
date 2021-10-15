@@ -75,7 +75,22 @@ post:
     content:
       application/json:
         schema:
-          $ref: 'componentes.yaml#/components/schemas/refugio'
+          allOf:
+            - $ref: 'componentes.yaml#/components/schemas/refugio'
+          type: object
+          properties:
+            localidad:
+              description: Nombre de la localidad
+              type: string
+              minLength: 3
+              maxLength: 150
+              example: Tlanelhuayocan
+            estado:
+              description: Nombre del estado
+              type: string
+              minLength: 3
+              maxLength: 50
+              example: Veracruz
   responses:
     200:
       description: Se ha actualizado la informacion del refugio
