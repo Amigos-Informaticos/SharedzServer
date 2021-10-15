@@ -53,7 +53,7 @@ def actualizar(id_refugio):
 	refugio.id_refugio = id_refugio
 	refugio.cargar_de_json(nuevos_valores)
 	estado = refugio.actualizar()
-	if estado == OK:
+	if estado == RESOURCE_CREATED:
 		refugio.cargar()
 		respuesta = Response(
 			json.dumps(refugio.jsonificar()),
