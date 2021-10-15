@@ -4,7 +4,7 @@ from flask import Blueprint, Response, request
 
 from src.model.Refugio import Refugio
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, OK
+from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, OK, RESOURCE_CREATED
 
 rutas_refugio = Blueprint("rutas_refugio", __name__)
 
@@ -53,7 +53,7 @@ def actualizar(id_refugio):
 	refugio.id_refugio = id_refugio
 	refugio.cargar_de_json(nuevos_valores)
 	estado = refugio.actualizar()
-	if estado == OK:
+	if estado == RESOURCE_CREATED:
 		refugio.cargar()
 		respuesta = Response(
 			json.dumps(refugio.jsonificar()),
