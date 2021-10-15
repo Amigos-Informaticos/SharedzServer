@@ -9,7 +9,7 @@ info:
     url: https://twitter.com/EdsonManuelVera
 servers:
   - description: Producción
-    url: 'http://amigosinformaticos.ddns.net:42070'
+    url: 'https://amigosinformaticos.ddns.net:42070'
 paths:
   /login:
     $ref: './login.yaml'
