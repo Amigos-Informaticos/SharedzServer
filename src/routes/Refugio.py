@@ -53,7 +53,7 @@ def actualizar(id_refugio):
 	refugio.id_refugio = id_refugio
 	refugio.cargar_de_json(nuevos_valores)
 	estado = refugio.actualizar()
-	if estado == RESOURCE_CREATED:
+	if estado == OK:
 		refugio.cargar()
 		respuesta = Response(
 			json.dumps(refugio.jsonificar()),
@@ -66,8 +66,6 @@ def actualizar(id_refugio):
 @rutas_refugio.delete("/refugios/<id_refugio>")
 @Auth.requires_token
 def eliminar(id_refugio):
-	respuesta = Response(status=NOT_FOUND)
 	refugio = Refugio()
 	refugio.id_refugio = id_refugio
-	respuesta = Response(status=refugio.eliminar())
-	return respuesta
+	return Response(status=refugio.eliminar())
