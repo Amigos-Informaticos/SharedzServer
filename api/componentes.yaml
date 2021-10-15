@@ -51,7 +51,7 @@ components:
     persona:
       type: object
       description: Una persona
-      required: [nombre]
+      required: [nombre, sexo]
       properties:
         id_persona:
           description: Identificador numerico del persona
