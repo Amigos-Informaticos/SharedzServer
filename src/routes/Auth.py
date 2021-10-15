@@ -23,16 +23,14 @@ class Auth:
 			saved_token = None
 			try:
 				saved_token = session["token"]
+				response = Response(status=UNAUTHORIZED)
 				if token is not None and saved_token is not None and token == saved_token:
 					session.modified = True
 					response = operation(*args, **kwargs)
-				else:
-					response = Response(status=UNAUTHORIZED)
 			except KeyError:
+				response = Response(status=UNAUTHORIZED)
 				if token is not None and saved_token is None:
 					response = Response(status=SESSION_EXPIRED)
-				else:
-					response = Response(status=UNAUTHORIZED)
 			return response
 
 		return update_wrapper(verify_auth, operation)
@@ -42,14 +40,12 @@ class Auth:
 		def decorator(operation):
 			def verify_role(*args, **kwargs):
 				token = request.headers.get("Token")
+				response = Response(status=FORBIDDEN)
 				if token is not None:
 					values = Auth.decode_token(token)
+					response = Response(status=FORBIDDEN)
 					if str(values["is_owner"]) == str(role):
 						response = operation(*args, **kwargs)
-					else:
-						response = Response(status=FORBIDDEN)
-				else:
-					response = Response(status=FORBIDDEN)
 				return response
 
 			return update_wrapper(verify_role, operation)

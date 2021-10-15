@@ -58,32 +58,14 @@ post:
   summary: Registra un nuevo adoptante
   tags:
     - Adoptante
+    - Registrar
   operationId: registrarAdoptante
   requestBody:
     description: Informacion del nuevo adoptante
     content:
       application/json:
         schema:
-          allOf:
-            - $ref: 'componentes.yaml#/components/schemas/adoptante'
-          properties:
-            localidad:
-              type: integer
-              format: int32
-              minimum: 1
-              maximum: 999
-              example: 12
-            estado:
-              type: integer
-              format: int32
-              minimum: 1
-              maximum: 32
-              example: 28
-            vivienda:
-              type: string
-              minLength: 3
-              maxLength: 150
-              example: Un ranchito
+          $ref: 'componentes.yaml#/components/schemas/adoptante'
     required: true
   responses:
     201:

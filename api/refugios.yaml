@@ -1,0 +1,74 @@
+description: Catalogo de refugios registrados
+get:
+  summary: Retorna los refugios que coincidan con algun parametro
+  tags:
+    - Refugio
+  operationId: obtenerRefugios
+  parameters:
+    - name: nombre
+      description: Nombre del refugio
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 100
+      required: false
+    - name: estado
+      description: Estado donde se ubica el refugio
+      in: query
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 32
+      required: false
+    - name: localidad
+      description: Localidad en donde se ubica el refugio
+      in: query
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 999
+      required: false
+  responses:
+    200:
+      description: Se ha encontrado por lo menos un refugio que coincide con un criterio
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Arreglo de refugios
+            items:
+              anyOf:
+                - $ref: 'componentes.yaml#/components/schemas/refugio'
+                - $ref: 'componentes.yaml#/components/schemas/refugio'
+                - $ref: 'componentes.yaml#/components/schemas/refugio'
+    204:
+      description: No se ha encontrado ninguna coincidencia
+    400:
+      description: Peticion erronea o malformada
+post:
+  summary: Registra un nuevo refugio
+  tags:
+    - Refugio
+    - Registrar
+  operationId: registrarRefugio
+  requestBody:
+    description: Informacion del refugio que se desea registrar
+    content:
+      application/json:
+        schema:
+          $ref: 'componentes.yaml#/components/schemas/refugio'
+    required: true
+  responses:
+    201:
+      description: Refugio registrado
+      content:
+        application/json:
+          schema:
+            $ref: 'componentes.yaml#/components/schemas/refugio'
+    400:
+      description: Peticion erronea o malformada
+    409:
+      description: El refugio ya ha sido registrado previamente
