@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildx:
-    if: ${{ github.event.label.name == 'build' }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'build') }}
     runs-on: ubuntu-latest
     steps:
       - name: Copiar Repositorio
