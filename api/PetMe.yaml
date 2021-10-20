@@ -21,3 +21,7 @@ paths:
     $ref: './refugios.yaml'
   /refugios/{id_refugio}:
     $ref: './refugios_id.yaml'
+  /mascotas:
+    $ref: './mascotas.yaml'
+  /mascotas/{id_mascota}:
+    $ref: './mascotas_id.yaml'

@@ -117,7 +117,7 @@ delete:
   operationId: eliminarAdoptante
   parameters:
     - name: id_adoptante
-      description: Id del adoptante cuya informacion se desea recuperar
+      description: Id del adoptante que se desea eliminar
       in: path
       schema:
         type: integer
