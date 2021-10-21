@@ -51,10 +51,10 @@ def actualizar(id_refugio):
 	nuevos_valores = request.json
 	refugio = Refugio()
 	refugio.id_refugio = id_refugio
+	refugio.cargar()
 	refugio.cargar_de_json(nuevos_valores)
 	estado = refugio.actualizar()
 	if estado == OK:
-		refugio.cargar()
 		respuesta = Response(
 			json.dumps(refugio.jsonificar()),
 			status=OK,
