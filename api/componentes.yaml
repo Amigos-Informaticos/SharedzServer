@@ -171,3 +171,63 @@ components:
           minLength: 5
           maxLength: 150
           example: Ayuda a mastocas en necesidad
+    mascota:
+      type: object
+      description: Una mascota
+      required: [nombre]
+      properties:
+        id_mascota:
+          description: Identificador de la mascota
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 999
+          example: 34
+        nombre:
+          description: Nombre de la mascota
+          type: string
+          minLength: 3
+          maxLength: 45
+          example: Solovino
+        color:
+          description: Color de la mascota
+          type: string
+          minLength: 3
+          maxLength: 30
+          example: doradito
+        sexo:
+          description: Sexo de la mascota
+          type: boolean
+          example: 0
+        especie:
+          description: Especie de la mascota
+          type: string
+          minLength: 3
+          maxLength: 40
+          example: Golden Retriever
+        edad:
+          description: Edad de la mascota
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 999
+          example: 12
+        peso:
+          description: Peso de la mascota en kilogramos
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 999
+          example: 0.98
+        tamanio:
+          description: Tamaño de la mascota
+          type: string
+          minLength: 3
+          maxLength: 30
+          example: Grandecito
+        estado:
+          description: Estado de la mascota
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: Buenito

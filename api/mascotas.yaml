@@ -1,0 +1,67 @@
+description: Catalogo de mascotas registradas
+get:
+  summary: Retorna las masctoas que coincidan con algun parametro
+  tags:
+    - Mascota
+  operationId: obtenerMascotas
+  parameters:
+    - name: nombre
+      description: Nombre de la mascota
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 45
+      required: false
+    - name: sexo
+      description: Sexo de la mascota
+      in: query
+      schema:
+        type: boolean
+      required: false
+    - name: especie
+      description: Especie de la mascota
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 40
+      required: false
+  responses:
+    200:
+      description: Se ha encontrado por lo menos una mascota que coincide con algun criterio
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Arreglo de masctoas
+            items:
+              anyOf:
+                - $ref: 'componentes.yaml#/components/schemas/mascota'
+                - $ref: 'componentes.yaml#/components/schemas/mascota'
+    204:
+      description: No se ha encontrado ninguna coincidencia
+    400:
+      description: Peticion erronea o malformada
+post:
+  summary: Registra una nueva mascota
+  tags:
+    - Mascota
+    - Registrar
+  operationId: registrarMascota
+  requestBody:
+    description: Informacion de la nueva mascota
+    content:
+      application/json:
+        schema:
+          $ref: 'componentes.yaml#/components/schemas/mascota'
+    required: true
+  responses:
+    201:
+      description: Mascota registrada
+      content:
+        application/json:
+          schema:
+            $ref: 'componentes.yaml#/components/schemas/mascota'
+    400:
+      description: Peticion erronea o malformada
