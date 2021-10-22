@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import Flask
+from flask import Flask, make_response
 from flask_cors import CORS
 
 from src.configuration.ConfigServer import ConfigServer
@@ -25,6 +25,16 @@ app.config["SESSION_COOKIE_SECURE"] = True
 @app.route('/')
 def hello_world():
 	return 'Hello World!'
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>", methods=["OPTIONS"])
+def prefligth(path):
+	response = make_response()
+	response.headers.add("Access-Control-Allow-Origin", "*")
+	response.headers.add('Access-Control-Allow-Headers', "*")
+	response.headers.add('Access-Control-Allow-Methods', "*")
+	return response
 
 
 if __name__ == '__main__':

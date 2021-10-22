@@ -7,7 +7,7 @@ refugio.nombre = "Refugio de mascotas #1"
 
 def test_guardar():
 	estado = refugio.guardar()
-	assert estado == RESOURCE_CREATED or estado == CONFLICT
+	assert estado == RESOURCE_CREATED
 
 
 def test_actualizar():
