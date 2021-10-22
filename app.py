@@ -20,6 +20,7 @@ valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
 app.config["SECRET_KEY"] = valores_config["crypt_password"]
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=valores_config["token_ttl"])
 app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = False
 
 
 @app.route('/')
