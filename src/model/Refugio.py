@@ -7,8 +7,8 @@ class Refugio:
 	def __init__(self):
 		self.id_refugio = None
 		self.nombre = None
-		self.estado = 1
-		self.localidad = 1
+		self.estado = None
+		self.localidad = None
 		self.direccion = None
 		self.pagina_web = None
 		self.telefono = None
