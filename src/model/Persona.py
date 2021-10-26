@@ -12,8 +12,8 @@ class Persona(ABC):
 		self.telefono = None
 		self.fecha_nacimiento = None
 		self.sexo = False
-		self.localidad = 1
-		self.estado = 1
+		self.localidad = None
+		self.estado = None
 		self.email = None
 		self.password = None
 		self.conexion = EasyConnection.build_from_static()

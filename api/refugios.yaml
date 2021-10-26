@@ -87,3 +87,5 @@ post:
       description: Peticion erronea o malformada
     409:
       description: El refugio ya ha sido registrado previamente
+    419:
+      description:

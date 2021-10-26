@@ -129,7 +129,7 @@ components:
           $ref: '#/components/schemas/vivienda'
     refugio:
       type: object
-      description: Un refugio para
+      description: Un refugio para mascotas
       required: [nombre]
       properties:
         id_refugio:

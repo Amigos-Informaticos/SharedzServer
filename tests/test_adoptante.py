@@ -10,7 +10,7 @@ adoptante.nombre = "Miguel Joaquin"
 def test_guardar():
 	estado = adoptante.guardar()
 	print(estado)
-	assert estado == RESOURCE_CREATED or estado == CONFLICT
+	assert estado == RESOURCE_CREATED
 
 
 def test_actualizar():
