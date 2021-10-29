@@ -86,7 +86,7 @@ class Mascota:
 		estado = BAD_REQUEST
 		if self.id_mascota is not None:
 			if self.cargar():
-				query = "DELETE FROM Mascota WHERE id_mascota = %s"
+				query = "CALL SPE_eliminarMascota(%s)"
 				valores = [self.id_mascota]
 				if self.conexion.send_query(query, valores):
 					estado = OK
