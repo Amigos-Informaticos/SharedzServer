@@ -5,6 +5,7 @@ from flask_cors import CORS
 
 from src.configuration.ConfigServer import ConfigServer
 from src.routes.Adoptante import rutas_adoptante
+from src.routes.Mascota import rutas_mascota
 from src.routes.Refugio import rutas_refugio
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ CORS(app, supports_credentials=True)
 
 app.register_blueprint(rutas_adoptante)
 app.register_blueprint(rutas_refugio)
+app.register_blueprint(rutas_mascota)
 
 config_server = ConfigServer("petMe")
 valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
