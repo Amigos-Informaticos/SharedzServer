@@ -23,7 +23,8 @@ def test_registrar_mascota():
 
 @pytest.mark.dependency(depends=["test_registrar_adoptante", "test_registrar_mascota"])
 def test_solicitar_adopcion():
-	assert adoptante.solicitar_adopcion(mascota.id_mascota) == RESOURCE_CREATED
+	estado, id_solicitud = adoptante.solicitar_adopcion(mascota.id_mascota)
+	assert estado == RESOURCE_CREATED
 
 
 @pytest.mark.dependency(depends=["test_registrar_adoptante"])
