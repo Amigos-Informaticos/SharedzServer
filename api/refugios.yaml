@@ -54,6 +54,13 @@ post:
     - Refugio
     - Registrar
   operationId: registrarRefugio
+  parameters:
+    - name: Token
+      description: Token identificador del adoptante loggeado
+      in: header
+      schema:
+        type: string
+      required: true
   requestBody:
     description: Informacion del refugio que se desea registrar
     content:
@@ -85,7 +92,9 @@ post:
             $ref: 'componentes.yaml#/components/schemas/refugio'
     400:
       description: Peticion erronea o malformada
+    401:
+      description: Usuario no autenticado
     409:
       description: El refugio ya ha sido registrado previamente
     419:
-      description:
+      description: La sesion del usuario ha expirado
