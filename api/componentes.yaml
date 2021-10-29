@@ -15,7 +15,7 @@ components:
     localidad:
       type: object
       description: Localidad
-      required: [id_localidad]
+      required: [ id_localidad ]
       properties:
         id_localidad:
           description: Identificador de la localidad
@@ -33,7 +33,7 @@ components:
     estado:
       type: object
       description: Un estado de la republica
-      required: [id_estado]
+      required: [ id_estado ]
       properties:
         id_estado:
           description: Identificador del estado
@@ -51,7 +51,7 @@ components:
     persona:
       type: object
       description: Una persona
-      required: [nombre, sexo]
+      required: [ nombre, sexo ]
       properties:
         id_persona:
           description: Identificador numerico del persona
@@ -104,7 +104,7 @@ components:
     vivienda:
       type: object
       description: Informacion de una vivienda
-      required: [id_vivienda]
+      required: [ id_vivienda ]
       properties:
         id_vivienda:
           description: Identificador de la vivienda
@@ -129,8 +129,8 @@ components:
           $ref: '#/components/schemas/vivienda'
     refugio:
       type: object
-      description: Un refugio para
-      required: [nombre]
+      description: Un refugio para mascotas
+      required: [ nombre ]
       properties:
         id_refugio:
           description: Identificador del refugio
@@ -174,7 +174,7 @@ components:
     mascota:
       type: object
       description: Una mascota
-      required: [nombre]
+      required: [ nombre ]
       properties:
         id_mascota:
           description: Identificador de la mascota
@@ -231,3 +231,36 @@ components:
           minLength: 3
           maxLength: 50
           example: Buenito
+    solicitud:
+      type: object
+      description: Una solicitud de adopcion
+      required: [ id_persona, id_mascota ]
+      properties:
+        id_solicitud:
+          description: Identificador de la solicitud
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 999
+          example: 12
+        id_persona:
+          description: Identificador numerico del persona
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 999
+          example: 34
+        id_mascota:
+          description: Identificador de la mascota
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 999
+          example: 34
+        estado:
+          description: Estado de la solicitud
+          type: string
+          enum:
+            - Pendiente
+            - Cancelada
+            - Aceptada
