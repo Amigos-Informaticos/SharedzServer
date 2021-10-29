@@ -134,3 +134,17 @@ class Adoptante(Persona):
 					else:
 						diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario
+
+	def solicitar_adopcion(self, id_mascota: int) -> tuple:
+		id_solicitud = 0
+		estado = BAD_REQUEST
+		if self.id_adoptante is not None and id_mascota is not None:
+			query = 'CALL SPI_registrarSolicitud(%s, %s)'
+			valores = [id_mascota, self.id_adoptante]
+			resultado = self.conexion.select(query, valores)
+			if resultado:
+				id_solicitud = resultado[0]["id_solicitud"]
+				estado = RESOURCE_CREATED
+			else:
+				estado = CONFLICT
+		return estado, id_solicitud

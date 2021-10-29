@@ -9,8 +9,7 @@ mascota.nombre = "Mauricio"
 
 @pytest.mark.dependency()
 def test_guardar():
-	estado = mascota.guardar()
-	assert estado == RESOURCE_CREATED
+	assert mascota.guardar() == RESOURCE_CREATED
 
 
 @pytest.mark.dependency(depends=["test_guardar"])

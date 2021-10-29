@@ -1,16 +1,14 @@
 import pytest
 
 from src.model.Adoptante import Adoptante
-from src.routes.HTTPStatus import CONFLICT, OK, RESOURCE_CREATED
+from src.routes.HTTPStatus import OK, RESOURCE_CREATED
 
 adoptante = Adoptante()
 adoptante.nombre = "Miguel Joaquin"
 
 
 def test_guardar():
-	estado = adoptante.guardar()
-	print(estado)
-	assert estado == RESOURCE_CREATED
+	assert adoptante.guardar() == RESOURCE_CREATED
 
 
 def test_actualizar():
