@@ -59,7 +59,6 @@ def registrar():
 
 
 @rutas_refugio.get("/refugios/<id_refugio>")
-@Auth.requires_token
 def obtener(id_refugio):
 	respuesta = Response(status=NOT_FOUND)
 	refugio = Refugio()
