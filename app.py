@@ -41,4 +41,4 @@ def prefligth(path):
 
 
 if __name__ == '__main__':
-	app.run(port=42070, ssl_context=("cert.pem", "key.pem"))
+	app.run(port=42070)

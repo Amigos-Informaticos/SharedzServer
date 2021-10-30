@@ -107,3 +107,17 @@ class Refugio:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario
+
+	@staticmethod
+	def buscar_refugios(nombre: str, estado: str, localidad: str, pagina: int) -> list:
+		refugios = []
+		query = "CALL SPS_buscarRefugios(%s, %s, %s, %s)"
+		valores = [nombre, estado, localidad, pagina]
+		conexion = EasyConnection.build_from_static()
+		resultados = conexion.select(query, valores)
+		if resultados:
+			for fila in resultados:
+				nuevo_refugio = Refugio()
+				nuevo_refugio.cargar_de_json(fila)
+				refugios.append(nuevo_refugio.jsonificar())
+		return refugios
