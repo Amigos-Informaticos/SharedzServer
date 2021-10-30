@@ -1,7 +1,7 @@
 import pytest
 
 from src.model.Adoptante import Adoptante
-from src.routes.HTTPStatus import CONFLICT, OK, RESOURCE_CREATED
+from src.routes.HTTPStatus import OK, RESOURCE_CREATED
 
 adoptante = Adoptante()
 adoptante.nombre = "Miguel Joaquin"
