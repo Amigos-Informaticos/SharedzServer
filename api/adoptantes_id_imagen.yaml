@@ -4,7 +4,7 @@ post:
   tags:
     - Adoptante
     - Imagenes
-  operation: imagenAdoptante
+  operationId: imagenAdoptante
   parameters:
     - name: id_adoptante
       description: Id del adoptante cuya informacion se desea recuperar
@@ -21,7 +21,6 @@ post:
         type: string
       required: true
   requestBody:
-    description: Imagen a subir del adoptante
     content:
       multipart/form-data:
         schema:
