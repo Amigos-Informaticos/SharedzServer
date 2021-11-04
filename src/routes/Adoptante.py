@@ -1,8 +1,8 @@
 import json
-from ftplib import FTP
 
 from flask import Blueprint, Response, request, session
 
+from src.connection.EasyFTP import EasyFTP
 from src.model.Adoptante import Adoptante
 from src.routes.Auth import Auth
 from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, OK, RESOURCE_CREATED
@@ -67,12 +67,12 @@ def subir_imagen(id_adoptante):
 	adoptante.id_adoptante = id_adoptante
 	if adoptante.cargar_adoptante():
 		file = request.files["imagen"]
-		conexion = FTP("amigosinformaticos.ddns.net")
-		conexion.login("pi", "beethoven", "noaccount")
-		conexion.cwd("pet_me_images")
-		resultado = conexion.storbinary(f"STOR {id_adoptante}.png", file.stream).split(" ")[0]
-		conexion.close()
+		conexion = EasyFTP.build_from_static()
+		guardado = conexion.upload_binary(file.stream, f"{id_adoptante}.png", False)
 		file.close()
+		resultado = 500
+		if guardado:
+			resultado = 226
 		respuesta = Response(status=resultado)
 	return respuesta
 

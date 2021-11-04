@@ -24,7 +24,6 @@ class EasyConnection:
 
 	@staticmethod
 	def build_from_static():
-		connection = None
 		if EasyConnection.static_host == "":
 			config_server = ConfigServer("petMe")
 			results = config_server.patch(["db_name", "db_host", "db_user", "db_password"]).json()
@@ -33,18 +32,11 @@ class EasyConnection:
 			EasyConnection.static_database = results["db_name"]
 			EasyConnection.static_user = results["db_user"]
 			EasyConnection.static_password = results["db_password"]
-
-			connection = EasyConnection()
-			connection.host = results["db_host"]
-			connection.database = results["db_name"]
-			connection.user = results["db_user"]
-			connection.password = results["db_password"]
-		elif EasyConnection.static_host != "":
-			connection = EasyConnection()
-			connection.host = EasyConnection.static_host
-			connection.database = EasyConnection.static_database
-			connection.user = EasyConnection.static_user
-			connection.password = EasyConnection.static_password
+		connection = EasyConnection()
+		connection.host = EasyConnection.static_host
+		connection.database = EasyConnection.static_database
+		connection.user = EasyConnection.static_user
+		connection.password = EasyConnection.static_password
 		return connection
 
 	def connect(self, include_params: bool = False):
