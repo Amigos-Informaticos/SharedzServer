@@ -59,7 +59,7 @@ def registrar():
 	return respuesta
 
 
-@rutas_adoptante.post("/adoptantes/<id_adoptante>/image")
+@rutas_adoptante.post("/adoptantes/<id_adoptante>/imagen")
 @Auth.requires_token
 def subir_imagen(id_adoptante):
 	respuesta = Response(status=NOT_FOUND)
@@ -67,8 +67,13 @@ def subir_imagen(id_adoptante):
 	adoptante.id_adoptante = id_adoptante
 	if adoptante.cargar_adoptante():
 		file = request.files["imagen"]
+
 		conexion = EasyFTP.build_from_static()
-		guardado = conexion.upload_binary(file.stream, f"{id_adoptante}.png", False)
+		conexion.connect()
+		conexion.set_dir()
+		guardado = conexion.upload_binary(file.stream, f"p_{id_adoptante}.png", False)
+		conexion.close()
+
 		file.close()
 		resultado = 500
 		if guardado:

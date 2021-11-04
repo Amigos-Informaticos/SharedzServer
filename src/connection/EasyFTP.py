@@ -66,7 +66,6 @@ class EasyFTP:
 		return changed
 
 	def upload_binary(self, file_obj, new_name: str, from_local: bool = True) -> bool:
-		self.connect()
 		command: str = f"STOR {new_name}"
 		result_code: str
 		if from_local:
@@ -74,5 +73,4 @@ class EasyFTP:
 				result_code = self.connection.storbinary(command, upload_file).split(" ")[0]
 		else:
 			result_code = self.connection.storbinary(command, file_obj).split(" ")[0]
-		self.close()
 		return result_code == "226"
