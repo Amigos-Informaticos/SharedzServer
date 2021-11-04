@@ -60,6 +60,7 @@ def registrar():
 
 
 @rutas_adoptante.post("/adoptantes/<id_adoptante>/image")
+@Auth.requires_token
 def subir_imagen(id_adoptante):
 	respuesta = Response(status=NOT_FOUND)
 	adoptante = Adoptante()
@@ -69,7 +70,7 @@ def subir_imagen(id_adoptante):
 		conexion = FTP("amigosinformaticos.ddns.net")
 		conexion.login("pi", "beethoven", "noaccount")
 		conexion.cwd("pet_me_images")
-		resultado = conexion.storbinary("STOR 1.png", file.stream).split(" ")[0]
+		resultado = conexion.storbinary(f"STOR {id_adoptante}.png", file.stream).split(" ")[0]
 		conexion.close()
 		file.close()
 		respuesta = Response(status=resultado)

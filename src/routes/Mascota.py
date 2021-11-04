@@ -13,10 +13,26 @@ rutas_mascota = Blueprint("rutas_mascota", __name__)
 def buscar_mascotas():
 	respuesta = Response(status=NO_CONTENT)
 	nombre = request.args.get("nombre", default=None, type=str)
-	sexo = request.args.get("sexo", default=None, type=bool)
 	especie = request.args.get("especie", default=None, type=str)
 	pagina = request.args.get("pagina", default=0, type=int)
-
+	mascotas = Mascota.buscar(nombre, especie, pagina)
+	if mascotas:
+		url = "https://amigosinformaticos.ddns.net:42070/mascotas?"
+		if nombre is not None:
+			url += f"nombre={nombre}&"
+		if especie is not None:
+			url += f"especie={especie}&"
+		json_respuesta = {
+			"mascotas": mascotas,
+			"sig": url + f"pagina={pagina + 1}"
+		}
+		if pagina > 0:
+			json_respuesta["prev"] = url + f"pagina={pagina - 1}"
+		respuesta = Response(
+			json.dumps(json_respuesta),
+			status=OK,
+			mimetype="application/json"
+		)
 	return respuesta
 
 
