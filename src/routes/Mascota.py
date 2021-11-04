@@ -4,9 +4,20 @@ from flask import Blueprint, Response, request
 
 from src.model.Mascota import Mascota
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_FOUND, OK
+from src.routes.HTTPStatus import NOT_FOUND, NO_CONTENT, OK
 
 rutas_mascota = Blueprint("rutas_mascota", __name__)
+
+
+@rutas_mascota.get("/mascotas")
+def buscar_mascotas():
+	respuesta = Response(status=NO_CONTENT)
+	nombre = request.args.get("nombre", default=None, type=str)
+	sexo = request.args.get("sexo", default=None, type=bool)
+	especie = request.args.get("especie", default=None, type=str)
+	pagina = request.args.get("pagina", default=0, type=int)
+
+	return respuesta
 
 
 @rutas_mascota.get("/mascotas/<id_mascota>")

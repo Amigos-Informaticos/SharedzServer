@@ -1,4 +1,5 @@
 import json
+from ftplib import FTP
 
 from flask import Blueprint, Response, request, session
 
@@ -55,6 +56,23 @@ def registrar():
 				status=estado,
 				mimetype="application/json"
 			)
+	return respuesta
+
+
+@rutas_adoptante.post("/adoptantes/<id_adoptante>/image")
+def subir_imagen(id_adoptante):
+	respuesta = Response(status=NOT_FOUND)
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	if adoptante.cargar_adoptante():
+		file = request.files["imagen"]
+		conexion = FTP("amigosinformaticos.ddns.net")
+		conexion.login("pi", "beethoven", "noaccount")
+		conexion.cwd("pet_me_images")
+		resultado = conexion.storbinary("STOR 1.png", file.stream).split(" ")[0]
+		conexion.close()
+		file.close()
+		respuesta = Response(status=resultado)
 	return respuesta
 
 

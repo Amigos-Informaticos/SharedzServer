@@ -231,6 +231,12 @@ components:
           minLength: 3
           maxLength: 50
           example: Buenito
+        raza_aparente:
+          description: Raza aparente de la mascota
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: Pastor Aleman
     solicitud:
       type: object
       description: Una solicitud de adopcion

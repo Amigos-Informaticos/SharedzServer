@@ -27,6 +27,14 @@ get:
         minLength: 3
         maxLength: 40
       required: false
+    - name: pagina
+      description: La pagina del catalogo
+      in: query
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+      required: false
   responses:
     200:
       description: Se ha encontrado por lo menos una mascota que coincide con algun criterio
