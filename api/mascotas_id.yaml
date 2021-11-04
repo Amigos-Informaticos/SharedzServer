@@ -20,19 +20,6 @@ get:
       schema:
         type: string
       required: true
-  requestBody:
-    description: Datos solicitados de la mascota
-    content:
-      application/json:
-        schema:
-          type: array
-          description: Arreglo con los nombres de las propiedades que se desean obtener
-          items:
-            type: string
-          example:
-            - id_mascota
-            - nombre
-            - sexo
   responses:
     200:
       description: Se ha retornado la informacion correspondiente a la mascota

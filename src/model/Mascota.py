@@ -107,3 +107,17 @@ class Mascota:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
 		return diccionario
+
+	@staticmethod
+	def buscar(nombre: str, especie: str, pagina: int) -> list:
+		mascotas = []
+		query = "CALL SPS_buscarMascotas(%s, %s, %s)"
+		valores = [nombre, especie, pagina]
+		conexion = EasyConnection.build_from_static()
+		resultados = conexion.select(query, valores)
+		if resultados:
+			for fila in resultados:
+				nueva_mascota = Mascota()
+				nueva_mascota.cargar_de_json(fila)
+				mascotas.append(nueva_mascota.jsonificar())
+		return mascotas

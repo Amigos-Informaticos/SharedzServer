@@ -63,10 +63,9 @@ def obtener(id_refugio):
 	respuesta = Response(status=NOT_FOUND)
 	refugio = Refugio()
 	refugio.id_refugio = id_refugio
-	solicitados = request.json
 	if refugio.cargar():
 		respuesta = Response(
-			json.dumps(refugio.jsonificar(solicitados)),
+			json.dumps(refugio.jsonificar()),
 			status=OK,
 			mimetype="application/json"
 		)

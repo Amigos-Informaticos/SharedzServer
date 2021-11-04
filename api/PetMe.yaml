@@ -17,6 +17,8 @@ paths:
     $ref: './adoptantes.yaml'
   /adoptantes/{id_adoptante}:
     $ref: './adoptantes_id.yaml'
+  /adoptantes/{id_adoptante}/imagen:
+    $ref: './adoptantes_id_imagen.yaml'
   /refugios:
     $ref: './refugios.yaml'
   /refugios/{id_refugio}:

@@ -13,12 +13,6 @@ get:
         minLength: 3
         maxLength: 45
       required: false
-    - name: sexo
-      description: Sexo de la mascota
-      in: query
-      schema:
-        type: boolean
-      required: false
     - name: especie
       description: Especie de la mascota
       in: query
@@ -27,18 +21,38 @@ get:
         minLength: 3
         maxLength: 40
       required: false
+    - name: pagina
+      description: La pagina del catalogo
+      in: query
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+      required: false
   responses:
     200:
       description: Se ha encontrado por lo menos una mascota que coincide con algun criterio
       content:
         application/json:
           schema:
-            type: array
-            description: Arreglo de masctoas
-            items:
-              anyOf:
-                - $ref: 'componentes.yaml#/components/schemas/mascota'
-                - $ref: 'componentes.yaml#/components/schemas/mascota'
+            type: object
+            description: Mascotas y paginas
+            properties:
+              mascotas:
+                type: array
+                description: Arreglo de mascotas
+                items:
+                  anyOf:
+                    - $ref: 'componentes.yaml#/components/schemas/mascota'
+                    - $ref: 'componentes.yaml#/components/schemas/mascota'
+              prev:
+                type: string
+                description: Pagina anterior del catalogo de refugios
+                example: https://amigosinformaticos.ddns.net:42070/mascotas?pagina=2
+              sig:
+                type: string
+                description: Pagina siguiente del catalogo de refugios
+                example: https://amigosinformaticos.ddns.net:42070/mascotas?pagina=4
     204:
       description: No se ha encontrado ninguna coincidencia
     400:
