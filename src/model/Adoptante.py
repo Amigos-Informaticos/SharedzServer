@@ -187,3 +187,12 @@ class Adoptante(Persona):
 				downloaded_file = ftp_con.download_binary(path)
 				respuesta = (OK, downloaded_file)
 		return respuesta
+
+	def eliminar_imagen(self) -> int:
+		respuesta = NOT_FOUND
+		if self.id_adoptante is not None:
+			query = 'UPDATE Persona SET imagen = NULL WHERE id_persona = %s'
+			valores = [self.id_adoptante]
+			if self.conexion.send_query(query, valores):
+				respuesta = OK
+		return respuesta
