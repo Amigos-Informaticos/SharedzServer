@@ -1,12 +1,32 @@
+import io
 import json
 
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, send_file
 
 from src.model.Mascota import Mascota
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_FOUND, NO_CONTENT, OK
+from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, NO_CONTENT, OK, RESOURCE_CREATED
 
 rutas_mascota = Blueprint("rutas_mascota", __name__)
+
+
+@rutas_mascota.post("/mascotas")
+@Auth.requires_token
+def registrar_mascota():
+	respuesta = Response(status=NOT_ACCEPTABLE)
+	if "nombre" in request.json:
+		vals = request.json
+		mascota = Mascota()
+		mascota.cargar_de_json(vals)
+		estado = mascota.guardar()
+		respuesta = Response(status=estado)
+		if estado == RESOURCE_CREATED:
+			respuesta = Response(
+				json.dumps(mascota.jsonificar()),
+				status=estado,
+				mimetype="application/json"
+			)
+	return respuesta
 
 
 @rutas_mascota.get("/mascotas")
@@ -37,7 +57,6 @@ def buscar_mascotas():
 
 
 @rutas_mascota.get("/mascotas/<id_mascota>")
-@Auth.requires_token
 def obtener_mascota(id_mascota):
 	respuesta = Response(status=NOT_FOUND)
 	solicitados = request.json
@@ -75,3 +94,43 @@ def eliminar_mascota(id_mascota):
 	mascota = Mascota()
 	mascota.id_mascota = id_mascota
 	return Response(status=mascota.eliminar())
+
+
+@rutas_mascota.post("/mascotas/<id_mascota>/imagen")
+@Auth.requires_token
+def subir_imagen(id_mascota):
+	respuesta = Response(status=NOT_FOUND)
+	mascota = Mascota()
+	mascota.id_mascota = id_mascota
+	if mascota.cargar():
+		file = request.files["imagen"]
+		estado = mascota.guardar_imagen(file.stream)
+		file.close()
+		respuesta = Response(status=estado)
+	return respuesta
+
+
+@rutas_mascota.get("/mascotas/<id_mascota>/imagen/<id_imagen>")
+def obtener_imagen(id_mascota, id_imagen):
+	respuesta = Response(status=NOT_FOUND)
+	mascota = Mascota()
+	mascota.id_mascota = id_mascota
+	estado, imagen = mascota.obtener_imagen(id_imagen)
+	respuesta = Response(status=estado)
+	if estado == OK:
+		abierto = open(imagen.name, "rb")
+		respuesta = send_file(
+			io.BytesIO(abierto.read()),
+			mimetype="image/png",
+			as_attachment=False
+		)
+		abierto.close()
+	return respuesta
+
+
+@rutas_mascota.delete("/mascotas/<id_mascota>/imagen/<id_imagen>")
+@Auth.requires_token
+def eliminar_imagen(id_mascota, id_imagen):
+	mascota = Mascota()
+	mascota.id_mascota = id_mascota
+	return Response(status=mascota.eliminar_imagen(id_imagen))

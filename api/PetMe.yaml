@@ -27,5 +27,9 @@ paths:
     $ref: './mascotas.yaml'
   /mascotas/{id_mascota}:
     $ref: './mascotas_id.yaml'
+  /mascotas/{id_mascota}/imagen:
+    $ref: './mascotas_id_imagen.yaml'
+  /mascotas/{id_mascota}/imagen/{id_imagen}:
+    $ref: './mascotas_id_imagen_id.yaml'
   /solicitudes:
     $ref: './solicitud.yaml'

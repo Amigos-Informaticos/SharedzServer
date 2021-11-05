@@ -1,5 +1,8 @@
 from src.connection.EasyConnection import EasyConnection
-from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_ACCEPTABLE, NOT_FOUND, OK, \
+from src.connection.EasyFTP import EasyFTP
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, FILE_UPLOADED, INTERNAL_SERVER_ERROR, \
+	NOT_ACCEPTABLE, \
+	NOT_FOUND, NO_CONTENT, OK, \
 	RESOURCE_CREATED
 
 
@@ -106,6 +109,8 @@ class Mascota:
 			for atributo in self.__dict__:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
+			imagenes = self.obtener_imagenes()
+			diccionario["imagenes"] = imagenes
 		return diccionario
 
 	@staticmethod
@@ -121,3 +126,57 @@ class Mascota:
 				nueva_mascota.cargar_de_json(fila)
 				mascotas.append(nueva_mascota.jsonificar())
 		return mascotas
+
+	def guardar_imagen(self, file_obj) -> int:
+		respuesta = NOT_FOUND
+		if self.id_mascota is not None:
+			query = "CALL SPI_subirImagenMascota(%s)"
+			valores = [self.id_mascota]
+			resultados = self.conexion.select(query, valores)
+			respuesta = INTERNAL_SERVER_ERROR
+			if resultados:
+				path = f"m_{self.id_mascota}_{resultados[0]['conteo_imagenes']}.png"
+				ftp = EasyFTP.build_from_static()
+				ftp.connect()
+				ftp.set_dir("pet_me_images")
+				if ftp.upload_binary(file_obj, path, False):
+					respuesta = FILE_UPLOADED
+				ftp.close()
+		return respuesta
+
+	def obtener_imagen(self, id_imagen) -> tuple:
+		respuesta = (NOT_FOUND, None)
+		if self.id_mascota is not None:
+			respuesta = (NO_CONTENT, None)
+			query = "SELECT COUNT(*) AS TOTAL FROM ImagenMascota WHERE id_mascota = %s AND contador = %s"
+			valores = [self.id_mascota, id_imagen]
+			resultado = self.conexion.select(query, valores)
+			if resultado[0]["TOTAL"] > 0:
+				path = f"m_{self.id_mascota}_{id_imagen}.png"
+				ftp = EasyFTP.build_from_static()
+				ftp.connect()
+				ftp.set_dir("pet_me_images")
+				downloaded_file = ftp.download_binary(path)
+				ftp.close()
+				respuesta = (OK, downloaded_file)
+		return respuesta
+
+	def obtener_imagenes(self) -> list:
+		imagenes = []
+		if self.id_mascota is not None:
+			query = "SELECT url FROM ImagenMascota WHERE id_mascota = %s"
+			valores = [self.id_mascota]
+			resultados = self.conexion.select(query, valores)
+			for fila in resultados:
+				imagenes.append(fila["url"])
+		return imagenes
+
+	def eliminar_imagen(self, id_imagen) -> int:
+		respuesta = NOT_FOUND
+		if self.id_mascota is not None:
+			query = "DELETE FROM ImagenMascota WHERE id_mascota = %s AND contador = %s"
+			valores = [self.id_mascota, id_imagen]
+			respuesta = NO_CONTENT
+			if self.conexion.send_query(query, valores):
+				respuesta = OK
+		return respuesta

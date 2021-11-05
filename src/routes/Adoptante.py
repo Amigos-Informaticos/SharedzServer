@@ -90,6 +90,14 @@ def subir_imagen(id_adoptante):
 	return respuesta
 
 
+@rutas_adoptante.delete("/adoptantes/<id_adoptante>/imagen")
+@Auth.requires_token
+def eliminar_imagen(id_adoptante):
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	return Response(status=adoptante.eliminar_imagen())
+
+
 @rutas_adoptante.route("/adoptantes/<id_adoptante>", methods=["GET"])
 @Auth.requires_token
 def get_adoptante(id_adoptante: int):
