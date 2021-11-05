@@ -109,6 +109,8 @@ class Mascota:
 			for atributo in self.__dict__:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
+			imagenes = self.obtener_imagenes()
+			diccionario["imagenes"] = imagenes
 		return diccionario
 
 	@staticmethod
@@ -158,6 +160,16 @@ class Mascota:
 				ftp.close()
 				respuesta = (OK, downloaded_file)
 		return respuesta
+
+	def obtener_imagenes(self) -> list:
+		imagenes = []
+		if self.id_mascota is not None:
+			query = "SELECT url FROM ImagenMascota WHERE id_mascota = %s"
+			valores = [self.id_mascota]
+			resultados = self.conexion.select(query, valores)
+			for fila in resultados:
+				imagenes.append(fila["url"])
+		return imagenes
 
 	def eliminar_imagen(self, id_imagen) -> int:
 		respuesta = NOT_FOUND

@@ -57,7 +57,6 @@ def buscar_mascotas():
 
 
 @rutas_mascota.get("/mascotas/<id_mascota>")
-@Auth.requires_token
 def obtener_mascota(id_mascota):
 	respuesta = Response(status=NOT_FOUND)
 	solicitados = request.json
