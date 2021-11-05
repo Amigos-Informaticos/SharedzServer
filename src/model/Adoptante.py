@@ -184,6 +184,6 @@ class Adoptante(Persona):
 				ftp_con = EasyFTP.build_from_static()
 				ftp_con.connect()
 				ftp_con.set_dir("pet_me_images")
-				downloaded_file = ftp_con.download_binary(f"p_{self.id_adoptante}.png")
+				downloaded_file = ftp_con.download_binary(path)
 				respuesta = (OK, downloaded_file)
 		return respuesta
