@@ -1,8 +1,8 @@
+import io
 import json
 
-from flask import Blueprint, Response, request, session
+from flask import Blueprint, Response, request, send_file, session
 
-from src.connection.EasyFTP import EasyFTP
 from src.model.Adoptante import Adoptante
 from src.routes.Auth import Auth
 from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, OK, RESOURCE_CREATED
@@ -59,6 +59,23 @@ def registrar():
 	return respuesta
 
 
+@rutas_adoptante.get("/adoptantes/<id_adoptante>/imagen")
+def obtener_imagen(id_adoptante):
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	estado, imagen = adoptante.obtener_imagen()
+	respuesta = Response(status=estado)
+	if estado == OK:
+		abierto = open(imagen.name, "rb")
+		respuesta = send_file(
+			io.BytesIO(abierto.read()),
+			mimetype="image/png",
+			as_attachment=False
+		)
+		abierto.close()
+	return respuesta
+
+
 @rutas_adoptante.post("/adoptantes/<id_adoptante>/imagen")
 @Auth.requires_token
 def subir_imagen(id_adoptante):
@@ -67,18 +84,9 @@ def subir_imagen(id_adoptante):
 	adoptante.id_adoptante = id_adoptante
 	if adoptante.cargar_adoptante():
 		file = request.files["imagen"]
-
-		conexion = EasyFTP.build_from_static()
-		conexion.connect()
-		conexion.set_dir()
-		guardado = conexion.upload_binary(file.stream, f"p_{id_adoptante}.png", False)
-		conexion.close()
-
+		estado = adoptante.guardar_imagen(file.stream)
 		file.close()
-		resultado = 500
-		if guardado:
-			resultado = 226
-		respuesta = Response(status=resultado)
+		respuesta = Response(status=estado)
 	return respuesta
 
 

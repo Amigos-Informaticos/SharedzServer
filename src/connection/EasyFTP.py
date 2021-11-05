@@ -1,4 +1,5 @@
 from ftplib import FTP, error_perm
+from tempfile import NamedTemporaryFile
 
 from src.configuration.ConfigServer import ConfigServer
 
@@ -74,3 +75,12 @@ class EasyFTP:
 		else:
 			result_code = self.connection.storbinary(command, file_obj).split(" ")[0]
 		return result_code == "226"
+
+	def download_binary(self, remote_path) -> NamedTemporaryFile:
+		file = NamedTemporaryFile()
+
+		command: str = f"RETR {remote_path}"
+		opened_file = open(file.name, "wb+")
+		self.connection.retrbinary(command, opened_file.write)
+		opened_file.close()
+		return file
