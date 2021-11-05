@@ -4,9 +4,28 @@ from flask import Blueprint, Response, request
 
 from src.model.Mascota import Mascota
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_FOUND, NO_CONTENT, OK
+from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, NO_CONTENT, OK
 
 rutas_mascota = Blueprint("rutas_mascota", __name__)
+
+
+@rutas_mascota.post("/mascotas")
+@Auth.requires_token
+def registrar_mascota():
+	respuesta = Response(status=NOT_ACCEPTABLE)
+	if "nombre" in request.json:
+		vals = request.json
+		mascota = Mascota()
+		mascota.cargar_de_json(vals)
+		estado = mascota.guardar()
+		respuesta = Response(status=estado)
+		if estado == OK:
+			respuesta = Response(
+				json.dumps(mascota.jsonificar()),
+				status=estado,
+				mimetype="application/json"
+			)
+	return respuesta
 
 
 @rutas_mascota.get("/mascotas")
