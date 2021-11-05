@@ -16,6 +16,7 @@ class Persona(ABC):
 		self.estado = None
 		self.email = None
 		self.password = None
+		self.imagen = None
 		self.conexion = EasyConnection.build_from_static()
 
 	def set_password(self, password: str) -> None:

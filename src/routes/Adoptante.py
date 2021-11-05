@@ -1,7 +1,7 @@
+import io
 import json
-from ftplib import FTP
 
-from flask import Blueprint, Response, request, session
+from flask import Blueprint, Response, request, send_file, session
 
 from src.model.Adoptante import Adoptante
 from src.routes.Auth import Auth
@@ -59,7 +59,24 @@ def registrar():
 	return respuesta
 
 
-@rutas_adoptante.post("/adoptantes/<id_adoptante>/image")
+@rutas_adoptante.get("/adoptantes/<id_adoptante>/imagen")
+def obtener_imagen(id_adoptante):
+	adoptante = Adoptante()
+	adoptante.id_adoptante = id_adoptante
+	estado, imagen = adoptante.obtener_imagen()
+	respuesta = Response(status=estado)
+	if estado == OK:
+		abierto = open(imagen.name, "rb")
+		respuesta = send_file(
+			io.BytesIO(abierto.read()),
+			mimetype="image/png",
+			as_attachment=False
+		)
+		abierto.close()
+	return respuesta
+
+
+@rutas_adoptante.post("/adoptantes/<id_adoptante>/imagen")
 @Auth.requires_token
 def subir_imagen(id_adoptante):
 	respuesta = Response(status=NOT_FOUND)
@@ -67,13 +84,9 @@ def subir_imagen(id_adoptante):
 	adoptante.id_adoptante = id_adoptante
 	if adoptante.cargar_adoptante():
 		file = request.files["imagen"]
-		conexion = FTP("amigosinformaticos.ddns.net")
-		conexion.login("pi", "beethoven", "noaccount")
-		conexion.cwd("pet_me_images")
-		resultado = conexion.storbinary(f"STOR {id_adoptante}.png", file.stream).split(" ")[0]
-		conexion.close()
+		estado = adoptante.guardar_imagen(file.stream)
 		file.close()
-		respuesta = Response(status=resultado)
+		respuesta = Response(status=estado)
 	return respuesta
 
 

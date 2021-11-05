@@ -1,5 +1,8 @@
+from src.connection.EasyFTP import EasyFTP
 from src.model.Persona import Persona
-from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_ACCEPTABLE, NOT_FOUND, OK, \
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, FILE_UPLOADED, INTERNAL_SERVER_ERROR, \
+	NOT_ACCEPTABLE, \
+	NOT_FOUND, NO_CONTENT, OK, \
 	RESOURCE_CREATED
 
 
@@ -148,3 +151,39 @@ class Adoptante(Persona):
 			else:
 				estado = CONFLICT
 		return estado, id_solicitud
+
+	def guardar_imagen(self, file_obj) -> int:
+		estado = NOT_FOUND
+		if self.id_adoptante is not None:
+			url = f"https://amigosinformaticos.ddns.net:42070/adoptantes/{self.id_adoptante}/imagen"
+			path = f"p_{self.id_adoptante}.png"
+			ftp_con = EasyFTP.build_from_static()
+			ftp_con.connect()
+			ftp_con.set_dir("pet_me_images")
+			estado = INTERNAL_SERVER_ERROR
+
+			if ftp_con.upload_binary(file_obj, path, False):
+				query = "UPDATE Persona SET imagen = %s WHERE id_persona = %s"
+				valores = [url, self.id_adoptante]
+
+				if self.conexion.send_query(query, valores):
+					estado = FILE_UPLOADED
+			ftp_con.close()
+		return estado
+
+	def obtener_imagen(self) -> tuple:
+		respuesta = (NOT_FOUND, None)
+		if self.id_adoptante is not None:
+			respuesta = (NO_CONTENT, None)
+			query = "SELECT COUNT(*) AS TOTAL FROM Persona WHERE id_persona = %s AND imagen IS NOT NULL"
+			valores = [self.id_adoptante]
+			resultado = self.conexion.select(query, valores)[0]["TOTAL"]
+
+			if resultado > 0:
+				path = f"p_{self.id_adoptante}.png"
+				ftp_con = EasyFTP.build_from_static()
+				ftp_con.connect()
+				ftp_con.set_dir("pet_me_images")
+				downloaded_file = ftp_con.download_binary(path)
+				respuesta = (OK, downloaded_file)
+		return respuesta
