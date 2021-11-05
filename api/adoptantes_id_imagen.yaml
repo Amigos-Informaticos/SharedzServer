@@ -56,7 +56,7 @@ post:
         schema:
           type: object
           properties:
-            file:
+            imagen:
               type: string
               format: binary
   responses:

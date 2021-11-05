@@ -26,7 +26,14 @@ get:
       content:
         application/json:
           schema:
-            $ref: 'componentes.yaml#/components/schemas/adoptante'
+            type: object
+            allOf:
+              - $ref: 'componentes.yaml#/components/schemas/adoptante'
+            properties:
+              imagenes:
+                type: array
+                items:
+                  type: string
     400:
       description: Peticion erronea o malformada
     401:
