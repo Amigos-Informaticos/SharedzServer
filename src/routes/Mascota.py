@@ -5,7 +5,7 @@ from flask import Blueprint, Response, request, send_file
 
 from src.model.Mascota import Mascota
 from src.routes.Auth import Auth
-from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, NO_CONTENT, OK
+from src.routes.HTTPStatus import NOT_ACCEPTABLE, NOT_FOUND, NO_CONTENT, OK, RESOURCE_CREATED
 
 rutas_mascota = Blueprint("rutas_mascota", __name__)
 
@@ -20,7 +20,7 @@ def registrar_mascota():
 		mascota.cargar_de_json(vals)
 		estado = mascota.guardar()
 		respuesta = Response(status=estado)
-		if estado == OK:
+		if estado == RESOURCE_CREATED:
 			respuesta = Response(
 				json.dumps(mascota.jsonificar()),
 				status=estado,
