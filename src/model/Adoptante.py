@@ -185,6 +185,7 @@ class Adoptante(Persona):
 				ftp_con.connect()
 				ftp_con.set_dir("pet_me_images")
 				downloaded_file = ftp_con.download_binary(path)
+				ftp_con.close()
 				respuesta = (OK, downloaded_file)
 		return respuesta
 
