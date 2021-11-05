@@ -23,7 +23,6 @@ def test_actualizar():
 @pytest.mark.dependency(depends=["test_guardar"])
 def test_cargar():
 	assert mascota.cargar() == True
-	print(mascota.__dict__)
 
 
 @pytest.mark.dependency(depends=["test_guardar"])
