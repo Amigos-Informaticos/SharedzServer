@@ -101,6 +101,10 @@ components:
           $ref: '#/components/schemas/localidad'
         estado:
           $ref: '#/components/schemas/estado'
+        imagen:
+          description: URL de la imagen del adoptante
+          type: string
+          example: "https://amigosinformaticos.ddns.net:42070/adoptantes/91/imagen"
     vivienda:
       type: object
       description: Informacion de una vivienda
@@ -171,6 +175,12 @@ components:
           minLength: 5
           maxLength: 150
           example: Ayuda a mastocas en necesidad
+        imagenes:
+          description: Arreglo de URLs de las imagenes de la mascota
+          type: array
+          items:
+            type: string
+          example: [ "https://amigosinformaticos.ddns.net:42070/refugios/91/imagen/2" ]
     mascota:
       type: object
       description: Una mascota
@@ -237,6 +247,12 @@ components:
           minLength: 3
           maxLength: 50
           example: Pastor Aleman
+        imagenes:
+          description: Arreglo de URLs de las imagenes de la mascota
+          type: array
+          items:
+            type: string
+          example: ["https://amigosinformaticos.ddns.net:42070/mascotas/91/imagen/3"]
     solicitud:
       type: object
       description: Una solicitud de adopcion
