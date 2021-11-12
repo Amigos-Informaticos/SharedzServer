@@ -109,8 +109,7 @@ class Mascota:
 			for atributo in self.__dict__:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
-			imagenes = self.obtener_imagenes()
-			diccionario["imagenes"] = imagenes
+			diccionario["imagenes"] = self.obtener_imagenes()
 		return diccionario
 
 	@staticmethod

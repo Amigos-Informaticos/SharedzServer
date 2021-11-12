@@ -108,6 +108,7 @@ class Refugio:
 			for atributo in self.__dict__:
 				if atributo != "conexion":
 					diccionario[atributo] = self.__getattribute__(atributo)
+			diccionario["imagenes"] = self.obtener_imagenes()
 		return diccionario
 
 	@staticmethod
