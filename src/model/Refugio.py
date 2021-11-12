@@ -1,5 +1,7 @@
 from src.connection.EasyConnection import EasyConnection
-from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_ACCEPTABLE, NOT_FOUND, OK, \
+from src.connection.EasyFTP import EasyFTP
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, FILE_UPLOADED, NOT_ACCEPTABLE, NOT_FOUND, \
+	NO_CONTENT, OK, \
 	RESOURCE_CREATED
 
 
@@ -121,3 +123,57 @@ class Refugio:
 				nuevo_refugio.cargar_de_json(fila)
 				refugios.append(nuevo_refugio.jsonificar())
 		return refugios
+
+	def guardar_imagen(self, file_obj) -> int:
+		respuesta = NOT_FOUND
+		if self.id_refugio is not None:
+			query = "CALL SPI_subirImagenRefugio(%s)"
+			valores = [self.id_refugio]
+			resultados = self.conexion.select(query, valores)
+			if resultados:
+				path = f"r_{self.id_refugio}_{resultados[0]['conteo_imagenes']}.png"
+				ftp = EasyFTP.build_from_static()
+				ftp.connect()
+				ftp.set_dir("pet_me_images")
+				if ftp.upload_binary(file_obj, path, False):
+					respuesta = FILE_UPLOADED
+				ftp.close()
+		return respuesta
+
+	def obtener_imagen(self, id_imagen) -> tuple:
+		respuesta = (NOT_FOUND, None)
+		if self.id_refugio is not None:
+			respuesta = (NO_CONTENT, None)
+			query = "SELECT COUNT(*) AS TOTAL FROM ImagenRefugio " \
+			        "WHERE id_refugio = %s AND contador = %s"
+			valores = [self.id_refugio, id_imagen]
+			resultado = self.conexion.select(query, valores)
+			if resultado[0]["TOTAL"] > 0:
+				path = f"r_{self.id_refugio}_{id_imagen}.png"
+				ftp = EasyFTP.build_from_static()
+				ftp.connect()
+				ftp.set_dir("pet_me_images")
+				downloaded_file = ftp.download_binary(path)
+				ftp.close()
+				respuesta = (OK, downloaded_file)
+		return respuesta
+
+	def obtener_imagenes(self) -> list:
+		imagenes = []
+		if self.id_refugio is not None:
+			query = "SELECT url FROM ImagenRefugio WHERE id_refugio = %s"
+			valores = [self.id_refugio]
+			resultados = self.conexion.select(query, valores)
+			for fila in resultados:
+				imagenes.append(fila["url"])
+		return imagenes
+
+	def eliminar_imagen(self, id_imagen) -> int:
+		respuesta = NOT_FOUND
+		if self.id_refugio is not None:
+			query = "DELETE FROM ImagenRefugio WHERE id_refugio = %s AND contador = %s"
+			valores = [self.id_refugio, id_imagen]
+			respuesta = NO_CONTENT
+			if self.conexion.send_query(query, valores):
+				respuesta = OK
+		return respuesta

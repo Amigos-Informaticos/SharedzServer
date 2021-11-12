@@ -1,6 +1,7 @@
+import io
 import json
 
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, send_file
 
 from src.model.Refugio import Refugio
 from src.routes.Auth import Auth
@@ -97,3 +98,43 @@ def eliminar(id_refugio):
 	refugio = Refugio()
 	refugio.id_refugio = id_refugio
 	return Response(status=refugio.eliminar())
+
+
+@rutas_refugio.post("/refugios/<id_refugio>/imagen")
+@Auth.requires_token
+def agregar_imagen(id_refugio):
+	respuesta = Response(status=NOT_FOUND)
+	refugio = Refugio()
+	refugio.id_refugio = id_refugio
+	if refugio.cargar():
+		file = request.files["imagen"]
+		estado = refugio.guardar_imagen(file.stream)
+		file.close()
+		respuesta = Response(status=estado)
+	return respuesta
+
+
+@rutas_refugio.get("/refugios/<id_refugio>/imagen/<id_imagen>")
+def obtener_imagen(id_refugio, id_imagen):
+	respuesta = Response(status=NOT_FOUND)
+	refugio = Refugio()
+	refugio.id_refugio = id_refugio
+	estado, imagen = refugio.obtener_imagen(id_imagen)
+	respuesta = Response(status=estado)
+	if estado == OK:
+		abierto = open(imagen.name, "rb")
+		respuesta = send_file(
+			io.BytesIO(abierto.read()),
+			mimetype="image/png",
+			as_attachment=False
+		)
+		abierto.close()
+	return respuesta
+
+
+@rutas_refugio.delete("/refugios/<id_refugio>/imagen/<id_imagen>")
+@Auth.requires_token
+def eliminar_imagen(id_refugio, id_imagen):
+	refugio = Refugio()
+	refugio.id_refugio = id_refugio
+	return Response(status=refugio.eliminar_imagen(id_imagen))

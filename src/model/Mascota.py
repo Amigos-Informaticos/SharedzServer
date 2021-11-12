@@ -148,7 +148,8 @@ class Mascota:
 		respuesta = (NOT_FOUND, None)
 		if self.id_mascota is not None:
 			respuesta = (NO_CONTENT, None)
-			query = "SELECT COUNT(*) AS TOTAL FROM ImagenMascota WHERE id_mascota = %s AND contador = %s"
+			query = "SELECT COUNT(*) AS TOTAL FROM ImagenMascota " \
+			        "WHERE id_mascota = %s AND contador = %s"
 			valores = [self.id_mascota, id_imagen]
 			resultado = self.conexion.select(query, valores)
 			if resultado[0]["TOTAL"] > 0:
