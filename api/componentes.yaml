@@ -178,7 +178,8 @@ components:
         imagenes:
           description: Arreglo de URLs de las imagenes de la mascota
           type: array
-          items: string
+          items:
+            type: string
           example: [ "https://amigosinformaticos.ddns.net:42070/refugios/91/imagen/2" ]
     mascota:
       type: object
@@ -249,7 +250,8 @@ components:
         imagenes:
           description: Arreglo de URLs de las imagenes de la mascota
           type: array
-          items: string
+          items:
+            type: string
           example: ["https://amigosinformaticos.ddns.net:42070/mascotas/91/imagen/3"]
     solicitud:
       type: object
