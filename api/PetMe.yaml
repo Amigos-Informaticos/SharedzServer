@@ -23,6 +23,10 @@ paths:
     $ref: './refugios.yaml'
   /refugios/{id_refugio}:
     $ref: './refugios_id.yaml'
+  /refugios/{id_refugio}/imagen:
+    $ref: './refugios_id_imagen.yaml'
+  /refugios/{id_refugio}/imagen/{id_imagen}:
+    $ref: './refugios_id_imagen_id.yaml'
   /mascotas:
     $ref: './mascotas.yaml'
   /mascotas/{id_mascota}:
