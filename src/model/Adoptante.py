@@ -1,3 +1,4 @@
+from src.connection.EasyConnection import EasyConnection
 from src.connection.EasyFTP import EasyFTP
 from src.model.Persona import Persona
 from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, FILE_UPLOADED, INTERNAL_SERVER_ERROR, \
@@ -151,6 +152,36 @@ class Adoptante(Persona):
 			else:
 				estado = CONFLICT
 		return estado, id_solicitud
+
+	def obtener_solicitudes(self):
+		solicitudes: list = []
+		if self.id_adoptante is not None:
+			query = "SELECT * FROM Solicitud WHERE persona = %s"
+			valores = [self.id_adoptante]
+			resultados = self.conexion.select(query, valores)
+			if resultados:
+				solicitudes = resultados
+		return solicitudes
+
+	def eliminar_solicitud(self, id_mascota):
+		estado = BAD_REQUEST
+		if self.id_adoptante is not None:
+			query = "DELETE FROM Solicitud WHERE persona = %s AND mascota = %s"
+			valores = [self.id_adoptante, id_mascota]
+			estado = INTERNAL_SERVER_ERROR
+			if self.conexion.send_query(query, valores):
+				estado = OK
+		return estado
+
+	@staticmethod
+	def obtener_todas_solicitudes():
+		solicitudes: list = []
+		conexion = EasyConnection.build_from_static()
+		query = "SELECT * FROM Solicitud"
+		resultados = conexion.select(query)
+		if resultados:
+			solicitudes = resultados
+		return solicitudes
 
 	def guardar_imagen(self, file_obj) -> int:
 		estado = NOT_FOUND
