@@ -39,7 +39,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: 'componentes.yaml#/components/schemas/solicitud'
+            type: array
+            items:
+              anyOf:
+                - $ref: 'componentes.yaml#/components/schemas/solicitud'
+                - $ref: 'componentes.yaml#/components/schemas/solicitud'
+                - $ref: 'componentes.yaml#/components/schemas/solicitud'
     204:
       description: No se ha encontrado ninguna coincidencia
     400:

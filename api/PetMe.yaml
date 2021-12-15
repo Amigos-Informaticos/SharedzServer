@@ -37,3 +37,7 @@ paths:
     $ref: './mascotas_id_imagen_id.yaml'
   /solicitudes:
     $ref: './solicitud.yaml'
+  /solicitudes/{id_adoptante}:
+    $ref: './solicitud_id_persona.yaml'
+  /solicitudes/{id_adoptante}/{id_mascota}:
+    $ref: './solicitud_id_persona_id_mascota.yaml'
