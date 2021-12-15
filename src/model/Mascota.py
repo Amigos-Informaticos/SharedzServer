@@ -74,7 +74,7 @@ class Mascota:
 				self.esterilizada,
 				self.desparacitada,
 				self.discapacitada,
-				self.descripcion,
+				self.descripcion
 			]
 			estado = NOT_FOUND
 			if self.conexion.send_query(query, valores):
