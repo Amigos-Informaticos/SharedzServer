@@ -23,7 +23,7 @@ class Mascota:
 		self.desparacitada = None
 		self.discapacitada = None
 		self.descripcion = None
-		self.registrador = None
+		self.registrador = 0
 		self.conexion = EasyConnection.build_from_static()
 
 	def guardar(self) -> int:
