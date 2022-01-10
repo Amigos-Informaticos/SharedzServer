@@ -25,7 +25,7 @@ class EasyConnection:
 	@staticmethod
 	def build_from_static():
 		if EasyConnection.static_host == "":
-			config_server = ConfigServer("petMe")
+			config_server = ConfigServer("sharedz")
 			results = config_server.patch(["db_name", "db_host", "db_user", "db_password"]).json()
 
 			EasyConnection.static_host = results["db_host"]

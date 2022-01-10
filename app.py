@@ -18,7 +18,7 @@ app.register_blueprint(rutas_refugio)
 app.register_blueprint(rutas_mascota)
 app.register_blueprint(rutas_solicitud)
 
-config_server = ConfigServer("petMe")
+config_server = ConfigServer("sharedz")
 valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
 
 app.config["SECRET_KEY"] = valores_config["crypt_password"]
