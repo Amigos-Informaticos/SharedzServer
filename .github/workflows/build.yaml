@@ -27,6 +27,6 @@ jobs:
       - name: Construir imagen con Buildx
         run: |
           docker buildx build \
-          -- push \
+          --push \
           --tag amigosinformaticos/sharedz:latest \
           --platform linux/arm/v6 .
