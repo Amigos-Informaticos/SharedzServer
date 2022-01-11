@@ -4,7 +4,7 @@ from src.connection.EasyConnection import EasyConnection
 class SQLEntity:
 	def __init__(self):
 		self.connection = EasyConnection.build_from_static()
-		self.ignored_attributes = [self.connection]
+		self.ignored_attributes = ["ignored_attributes", "connection"]
 
 	def ignore_attribute(self, attribute_name: str) -> bool:
 		ignored: bool = False

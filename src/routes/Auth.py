@@ -4,9 +4,10 @@ from functools import update_wrapper
 from cryptography.fernet import Fernet
 from flask import Response, request, session
 
+from src.model.Member import Member
 from src.model.Persona import Persona
-from src.routes.HTTPStatus import FORBIDDEN, SESSION_EXPIRED, UNAUTHORIZED
-from src.util.Util import decode, encode
+from src.routes.HTTPStatus import FORBIDDEN, NOT_ACCEPTABLE, SESSION_EXPIRED, UNAUTHORIZED
+from src.util.Util import decode, encode, incluidos
 
 
 class Auth:
@@ -53,7 +54,21 @@ class Auth:
 		return decorator
 
 	@staticmethod
-	def generate_token(user: Persona) -> str:
+	def requires_payload(required_fields: set):
+		def decorator(operation):
+			def verify_payload(*args, **kwargs):
+				if not incluidos(required_fields, request.json):
+					response = Response(status=NOT_ACCEPTABLE)
+				else:
+					response = operation(*args, **kwargs)
+				return response
+
+			return update_wrapper(verify_payload, operation)
+
+		return decorator
+
+	@staticmethod
+	def generate_token(user: Persona or Member) -> str:
 		if Auth.secret_password is None:
 			Auth.set_password()
 		timestamp = datetime.now().strftime("%H:%M:%S")

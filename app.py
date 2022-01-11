@@ -4,8 +4,8 @@ from flask import Flask, make_response
 from flask_cors import CORS
 
 from src.configuration.ConfigServer import ConfigServer
-from src.routes.Adoptante import rutas_adoptante
 from src.routes.Mascota import rutas_mascota
+from src.routes.Member import member_routes
 from src.routes.Refugio import rutas_refugio
 from src.routes.Solicitud import rutas_solicitud
 
@@ -13,10 +13,11 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-app.register_blueprint(rutas_adoptante)
+# app.register_blueprint(rutas_adoptante)
 app.register_blueprint(rutas_refugio)
 app.register_blueprint(rutas_mascota)
 app.register_blueprint(rutas_solicitud)
+app.register_blueprint(member_routes)
 
 config_server = ConfigServer("sharedz")
 valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
@@ -43,4 +44,4 @@ def prefligth(path):
 
 
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=42070, ssl_context=("cert.crt", "key.key"))
+	app.run(host="0.0.0.0", port=42071, ssl_context=("cert.crt", "key.key"))
