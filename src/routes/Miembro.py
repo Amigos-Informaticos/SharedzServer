@@ -6,10 +6,10 @@ from src.model.Miembro import Miembro
 from src.routes.Auth import Auth
 from src.routes.HTTPStatus import OK, RESOURCE_CREATED
 
-member_routes = Blueprint("member_routes", __name__)
+rutas_miembro = Blueprint("rutas_miembro", __name__)
 
 
-@member_routes.post("/login")
+@rutas_miembro.post("/login")
 @Auth.requires_payload({"email", "password"})
 def login():
 	payload = request.json
@@ -36,7 +36,7 @@ def login():
 	return respuesta
 
 
-@member_routes.post("/members")
+@rutas_miembro.post("/miembros")
 @Auth.requires_payload({"name", "email", "password"})
 def registrar():
 	payload = request.json

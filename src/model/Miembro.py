@@ -66,7 +66,7 @@ class Miembro(SQLEntity):
 		diccionario: dict = {"id_miembro": self.id_miembro}
 		if valores_requeridos is not None:
 			for atributo in self.atributos_vigilados():
-				if atributo in valores_requeridos and atributo not in diccionario:
+				if atributo in valores_requeridos:
 					diccionario[atributo] = self.__getattribute__(atributo)
 		else:
 			for atributo in self.atributos_vigilados():

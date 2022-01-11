@@ -4,7 +4,8 @@ from flask import Flask, make_response
 from flask_cors import CORS
 
 from src.configuration.ConfigServer import ConfigServer
-from src.routes.Member import member_routes
+from src.routes.Casa import rutas_casa
+from src.routes.Miembro import rutas_miembro
 from src.routes.Solicitud import rutas_solicitud
 
 app = Flask(__name__)
@@ -12,7 +13,8 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 app.register_blueprint(rutas_solicitud)
-app.register_blueprint(member_routes)
+app.register_blueprint(rutas_miembro)
+app.register_blueprint(rutas_casa)
 
 config_server = ConfigServer("sharedz")
 valores_config = config_server.patch(["crypt_password", "token_ttl"]).json()
