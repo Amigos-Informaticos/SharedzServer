@@ -4,7 +4,7 @@ from functools import update_wrapper
 from cryptography.fernet import Fernet
 from flask import Response, request, session
 
-from src.model.Member import Member
+from src.model.Miembro import Miembro
 from src.model.Persona import Persona
 from src.routes.HTTPStatus import FORBIDDEN, NOT_ACCEPTABLE, SESSION_EXPIRED, UNAUTHORIZED
 from src.util.Util import decode, encode, incluidos
@@ -68,7 +68,7 @@ class Auth:
 		return decorator
 
 	@staticmethod
-	def generate_token(user: Persona or Member) -> str:
+	def generate_token(user: Persona or Miembro) -> str:
 		if Auth.secret_password is None:
 			Auth.set_password()
 		timestamp = datetime.now().strftime("%H:%M:%S")

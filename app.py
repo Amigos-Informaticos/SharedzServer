@@ -4,18 +4,13 @@ from flask import Flask, make_response
 from flask_cors import CORS
 
 from src.configuration.ConfigServer import ConfigServer
-from src.routes.Mascota import rutas_mascota
 from src.routes.Member import member_routes
-from src.routes.Refugio import rutas_refugio
 from src.routes.Solicitud import rutas_solicitud
 
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-# app.register_blueprint(rutas_adoptante)
-app.register_blueprint(rutas_refugio)
-app.register_blueprint(rutas_mascota)
 app.register_blueprint(rutas_solicitud)
 app.register_blueprint(member_routes)
 

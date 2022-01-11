@@ -66,7 +66,7 @@ def obtener_imagen(id_adoptante):
 	estado, imagen = adoptante.obtener_imagen()
 	respuesta = Response(status=estado)
 	if estado == OK:
-		abierto = open(imagen.name, "rb")
+		abierto = open(imagen.nombre, "rb")
 		respuesta = send_file(
 			io.BytesIO(abierto.read()),
 			mimetype="image/png",
