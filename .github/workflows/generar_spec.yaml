@@ -1,0 +1,35 @@
+name: Generar especificación de API
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generar_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copiar repositorio
+        uses: actions/checkout@v2
+
+      - name: Validar especificacion
+        uses: mpetrunic/swagger-cli-action@v1.0.0
+        with:
+          command: "validate api/Sharedz.yaml"
+
+      - name: Compilar especificacion
+        uses: mpetrunic/swagger-cli-action@v1.0.0
+        with:
+          command: bundle -o SharedzSpec.yaml -t yaml api/Sharedz.yaml
+
+      - name: Publicar especificacion
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: specs
+          spec-file: SharedzSpec.yaml
+
+      - name: Desplegar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.EDSON_GITHUB_TOKEN }}
+          publish_dir: specs

@@ -2,10 +2,10 @@ description: Crea una nueva sesión del usuario en el sistema
 post:
   summary: Endpoint para que los usuarios puedan iniciar sesión en el servidor
   tags:
-    - Usuario general
+    - Miembro
   operationId: login
   requestBody:
-    description: Credenciales para iniciar sesion
+    description: Objeto JSON con las credenciales para iniciar sesion
     content:
       application/json:
         schema:
@@ -19,20 +19,20 @@ post:
               type: string
               minLength: 8
               maxLength: 100
-              example: contraChida
+              example: ContraChida
     required: true
   responses:
     200:
-      description: El usuario ha iniciado sesion exitosamente
+      description: El usuario ha iniciado sesion de forma exitosa
       content:
         application/json:
           schema:
             properties:
               token:
-                description: Token identificador del usuario
+                description: Token identificador de la sesion del usuario
                 type: string
               id:
-                description: id del comensal
+                description: Id del miembro que ha iniciado sesion
                 type: integer
                 format: int32
                 minimum: 1
@@ -44,3 +44,5 @@ post:
       description: El usuario no se encuentra registrado
     406:
       description: La solicitud no es aceptable por falta de valores
+    500:
+      description: Ha ocurrido un error en el servidor

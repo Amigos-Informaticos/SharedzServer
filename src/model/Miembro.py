@@ -1,5 +1,5 @@
 from src.model.SQLEntity import SQLEntity
-from src.routes.HTTPStatus import BAD_REQUEST, NOT_FOUND, OK, RESOURCE_CREATED
+from src.routes.HTTPStatus import BAD_REQUEST, CONFLICT, NOT_FOUND, OK, RESOURCE_CREATED
 from src.util.Util import md5
 
 
@@ -23,6 +23,8 @@ class Miembro(SQLEntity):
 			if resultado:
 				self.id_miembro = resultado[0]["id_miembro"]
 				estado = RESOURCE_CREATED
+			else:
+				estado = CONFLICT
 		return estado
 
 	def login(self) -> int:

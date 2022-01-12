@@ -1,0 +1,27 @@
+description: Catalogo de miembros
+post:
+  summary: Endpoint para registrar un nuevo miembro en el sistema
+  tags:
+    - Miembro
+  operationId: registrarMiembro
+  requestBody:
+    description: Objeto JSON con la informacion del nuevo miembro
+    content:
+      application/json:
+        schema:
+          $ref: './componentes.yaml#/components/schemas/miembro'
+  responses:
+    201:
+      description: Se ha registrado el nuevo miembro en el sistema
+      content:
+        application/json:
+          schema:
+            $ref: './componentes.yaml#/components/schemas/miembro'
+    400:
+      description: Peticion erronea o malformada
+    406:
+      description: La solicitud no es aceptable por falta de valores
+    409:
+      description: El email del nuevo miembro ya ha sido registrado previamente
+    500:
+      description: Ha ocurrido un error en el servidor

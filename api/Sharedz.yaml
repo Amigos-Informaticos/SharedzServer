@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Sharedz API
+  description: Especificación de la API que expone los servicios provistos por el servidor de Sharedz
+  version: 1.0.0
+  contact:
+    name: Edson Manuel Carballo Vera
+    email: edsonmanuelcarballovera@gmail.com
+    url: https://twitter.com/EdsonManuelVera
+servers:
+  - description: Producción
+    url: 'https://amigosinformaticos.ddns.net:42071'
+paths:
+  /login:
+    $ref: './login.yaml'
+  /miembros:
+    $ref: './miembros.yaml'

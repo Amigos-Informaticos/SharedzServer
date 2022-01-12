@@ -1,307 +1,62 @@
 components:
   schemas:
-    telefono:
-      description: Numero telefonico
-      type: string
-      minLength: 8
-      maxLength: 14
-      example: 22 91 55 55 55
-    email:
-      description: Direccion de correo
-      type: string
-      minLength: 5
-      maxLength: 320
-      example: correo@correo.com
-    localidad:
+    miembro:
       type: object
-      description: Localidad
-      required: [ id_localidad ]
+      description: Usuario general del sistema
+      required:
+        - nombre
+        - email
+        - password
       properties:
-        id_localidad:
-          description: Identificador de la localidad
+        id_miembro:
           type: integer
-          format: int32
-          minimum: 0
-          maximum: 999
-          example: 12
-        localidad:
-          description: Nombre de la localidad
-          type: string
-          minLength: 3
-          maxLength: 150
-          example: Tlanelhuayocan
-    estado:
-      type: object
-      description: Un estado de la republica
-      required: [ id_estado ]
-      properties:
-        id_estado:
-          description: Identificador del estado
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 32
-          example: 28
-        estado:
-          description: Nombre del estado
-          type: string
-          minLength: 3
-          maxLength: 50
-          example: Veracruz
-    persona:
-      type: object
-      description: Una persona
-      required: [ nombre, sexo ]
-      properties:
-        id_persona:
-          description: Identificador numerico del persona
-          type: integer
-          format: int32
+          description: Identificador numerico del miembro
           minimum: 1
           maximum: 999
-          example: 34
+          example: 24
         nombre:
-          description: El nombre de la persona
           type: string
-          minLength: 3
-          maxLength: 40
-          example: Miguel Joaquin
-        apellido_paterno:
-          description: El apellido paterno de la persona
-          type: string
-          minLength: 3
-          maxLength: 35
-          example: Perez
-        apellido_materno:
-          description: El apellido materno de la persona
-          type: string
-          minLength: 3
-          maxLength: 35
-          example: Arriaga
-        telefono:
-          $ref: '#/components/schemas/telefono'
+          description: Nombre del miembro
+          example: Juan Gabriel Lopez Doriga
         email:
-          $ref: '#/components/schemas/email'
+          type: string
+          description: Email del miembro
+          minLength: 5
+          maxLength: 320
+          example: jglopezdrg@email.com
         password:
-          description: Contraseña de la persona
           type: string
+          description: Contraseña del miembro
           minLength: 8
-          maxLength: 32
-          example: contraChida
-        fecha_nacimiento:
-          description: Fecha de nacimiento de la persona
-          type: string
-          format: date
-          example: 1999-07-19
-        sexo:
-          description: Sexo de la persona
-          type: boolean
-          example: 0
-        localidad:
-          $ref: '#/components/schemas/localidad'
-        estado:
-          $ref: '#/components/schemas/estado'
-        imagen:
-          description: URL de la imagen del adoptante
-          type: string
-          example: "https://amigosinformaticos.ddns.net:42070/adoptantes/91/imagen"
-    vivienda:
-      type: object
-      description: Informacion de una vivienda
-      required: [ id_vivienda ]
-      properties:
-        id_vivienda:
-          description: Identificador de la vivienda
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 999
-          example: 435
-        tipo:
-          description: Tipo de vivienda
-          type: string
-          minLength: 3
           maxLength: 100
-          example: Un ranchito
-    adoptante:
-      allOf:
-        - $ref: '#/components/schemas/persona'
+          example: ContraChida
+    casa:
       type: object
-      description: Un adoptante
+      description: Elemento que representa un grupo de usuarios
       properties:
-        vivienda:
-          $ref: '#/components/schemas/vivienda'
-    refugio:
-      type: object
-      description: Un refugio para mascotas
-      required: [ nombre ]
-      properties:
-        id_refugio:
-          description: Identificador del refugio
+        id_casa:
           type: integer
-          format: int32
-          minimum: 0
+          description: Identificador numerico de la casa
+          minimum: 1
           maximum: 999
-          example: 62
+          example: 12
         nombre:
-          description: Nombre del refugio
           type: string
-          minLength: 3
-          maxLength: 100
-          example: Refugio patitas
-        estado:
-          $ref: '#/components/schemas/estado'
-        localidad:
-          $ref: '#/components/schemas/localidad'
-        direccion:
-          description: Direccion del refugio
+          description: Nombre de la casa
+          minLength: 2
+          maxLength: 50
+          example: Casa Lopez
+        codigo_publico:
           type: string
+          description: Codigo alfanumerico que sirve para realizar operaciones sin exponer el identificador de la casa
           minLength: 10
-          maxLength: 200
-          example: Calle Huitlacoche
-        pagina_web:
-          description: Pagina web del refugio
-          type: string
-          minLength: 5
-          maxLength: 200
-          example: www.refugiopatitas.com
-        telefono:
-          $ref: '#/components/schemas/telefono'
-        email:
-          $ref: '#/components/schemas/email'
-        fundacion:
-          description: Fundacion a la cual pertenece el refugio
-          type: string
-          minLength: 5
-          maxLength: 150
-          example: Ayuda a mastocas en necesidad
-        imagenes:
-          description: Arreglo de URLs de las imagenes de la mascota
+          maxLength: 10
+          example: b520c8be00
+        miembros:
           type: array
+          description: Arreglo de miembros que forman parte de la casa
           items:
-            type: string
-          example: [ "https://amigosinformaticos.ddns.net:42070/refugios/91/imagen/2" ]
-    mascota:
-      type: object
-      description: Una mascota
-      required: [ nombre ]
-      properties:
-        id_mascota:
-          description: Identificador de la mascota
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 999
-          example: 34
-        nombre:
-          description: Nombre de la mascota
-          type: string
-          minLength: 3
-          maxLength: 45
-          example: Solovino
-        color:
-          description: Color de la mascota
-          type: string
-          minLength: 3
-          maxLength: 30
-          example: doradito
-        sexo:
-          description: Sexo de la mascota
-          type: boolean
-          example: 0
-        especie:
-          description: Especie de la mascota
-          type: string
-          minLength: 3
-          maxLength: 40
-          example: Golden Retriever
-        edad:
-          description: Edad de la mascota
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 999
-          example: 12
-        peso:
-          description: Peso de la mascota en kilogramos
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 999
-          example: 0.98
-        tamanio:
-          description: Tamaño de la mascota
-          type: string
-          minLength: 3
-          maxLength: 30
-          example: Grandecito
-        estado:
-          description: Estado de la mascota
-          type: string
-          minLength: 3
-          maxLength: 50
-          example: Buenito
-        raza_aparente:
-          description: Raza aparente de la mascota
-          type: string
-          minLength: 3
-          maxLength: 50
-          example: Pastor Aleman
-        esterilizada:
-          description: Si la mascota está o no esterilizada
-          type: boolean
-        desparacitada:
-          description: Si la mascota está desparacitada
-          type: boolean
-        discapacitada:
-          description: Si la mascota está discapacitada
-          type: boolean
-        descripcion:
-          description: Una descripcion breve de la situacion medica de la mascota
-          type: string
-          example: La mascota se encuentra bien de salud. Le faltan 3 patitas pero todo lo demas bien.
-        registrador:
-          description: Id de la persona que registró la mascota
-          type: integer
-          minimum: 1
-          maximum: 999
-          example: 26
-        imagenes:
-          description: Arreglo de URLs de las imagenes de la mascota
-          type: array
-          items:
-            type: string
-          example: ["https://amigosinformaticos.ddns.net:42070/mascotas/91/imagen/3"]
-    solicitud:
-      type: object
-      description: Una solicitud de adopcion
-      required: [ id_persona, id_mascota ]
-      properties:
-        id_solicitud:
-          description: Identificador de la solicitud
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 999
-          example: 12
-        id_persona:
-          description: Identificador numerico del persona
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 999
-          example: 34
-        id_mascota:
-          description: Identificador de la mascota
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 999
-          example: 34
-        estado:
-          description: Estado de la solicitud
-          type: string
-          enum:
-            - Pendiente
-            - Cancelada
-            - Aceptada
+            anyOf:
+              - $ref: '#/components/schemas/miembro'
+              - $ref: '#/components/schemas/miembro'
+              - $ref: '#/components/schemas/miembro'
