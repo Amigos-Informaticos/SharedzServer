@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: Sharedz API
+  description: Especificación de la API que expone los servicios provistos por el servidor de Sharedz
+  version: 1.0.0
+  contact:
+    name: Edson Manuel Carballo Vera
+    email: edsonmanuelcarballovera@gmail.com
+    url: 'https://twitter.com/EdsonManuelVera'
+servers:
+  - description: Producción
+    url: 'https://amigosinformaticos.ddns.net:42071'
+paths:
+  /login:
+    description: Crea una nueva sesión del usuario en el sistema
+    post:
+      summary: Endpoint para que los usuarios puedan iniciar sesión en el servidor
+      tags:
+        - Miembro
+      operationId: login
+      requestBody:
+        description: Objeto JSON con las credenciales para iniciar sesion
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  minLength: 5
+                  maxLength: 320
+                  example: correo@correo.com
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 100
+                  example: ContraChida
+        required: true
+      responses:
+        '200':
+          description: El usuario ha iniciado sesion de forma exitosa
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    description: Token identificador de la sesion del usuario
+                    type: string
+                  id:
+                    description: Id del miembro que ha iniciado sesion
+                    type: integer
+                    format: int32
+                    minimum: 1
+                    maximum: 999
+                    example: 24
+        '400':
+          description: Peticion erronea o malformada
+        '404':
+          description: El usuario no se encuentra registrado
+        '406':
+          description: La solicitud no es aceptable por falta de valores
+        '500':
+          description: Ha ocurrido un error en el servidor
+  /miembros:
+    description: Catalogo de miembros
+    post:
+      summary: Endpoint para registrar un nuevo miembro en el sistema
+      tags:
+        - Miembro
+      operationId: registrarMiembro
+      requestBody:
+        description: Objeto JSON con la informacion del nuevo miembro
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Usuario general del sistema
+              required:
+                - nombre
+                - email
+                - password
+              properties:
+                id_miembro:
+                  type: integer
+                  description: Identificador numerico del miembro
+                  minimum: 1
+                  maximum: 999
+                  example: 24
+                nombre:
+                  type: string
+                  description: Nombre del miembro
+                  example: Juan Gabriel Lopez Doriga
+                email:
+                  type: string
+                  description: Email del miembro
+                  minLength: 5
+                  maxLength: 320
+                  example: jglopezdrg@email.com
+                password:
+                  type: string
+                  description: Contraseña del miembro
+                  minLength: 8
+                  maxLength: 100
+                  example: ContraChida
+      responses:
+        '201':
+          description: Se ha registrado el nuevo miembro en el sistema
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1miembros/post/requestBody/content/application~1json/schema'
+        '400':
+          description: Peticion erronea o malformada
+        '406':
+          description: La solicitud no es aceptable por falta de valores
+        '409':
+          description: El email del nuevo miembro ya ha sido registrado previamente
+        '500':
+          description: Ha ocurrido un error en el servidor
