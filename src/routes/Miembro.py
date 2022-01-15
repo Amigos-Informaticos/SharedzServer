@@ -37,7 +37,7 @@ def login():
 
 
 @rutas_miembro.post("/miembros")
-@Auth.requires_payload({"name", "email", "password"})
+@Auth.requires_payload({"nombre", "email", "password"})
 def registrar():
 	payload = request.json
 	miembro = Miembro()
